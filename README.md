@@ -140,6 +140,10 @@ Output: `build/libs/ExtraNPC-1.0.0.jar`
 </p>
 
 <p align="center">
+  <img src="assets/themoox-badge.png" alt="Themoo. X" width="420">
+</p>
+
+<p align="center">
   Discord · <code>@m_1z.4</code><br>
   Server · <a href="https://discord.com/invite/fJTSA6vnVQ">Extra Flux</a><br>
   In-game · <code>/extranpc about</code>

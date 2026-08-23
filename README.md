@@ -29,8 +29,8 @@
 - [Permissions](#permissions)
 - [Config files](#config-files)
 - [Build from source](#build-from-source)
-- [License](#license)
 - [Support](#support)
+- [License](#license)
 
 ---
 
@@ -147,32 +147,39 @@ Output: `build/libs/ExtraNPC-1.0.0.jar`
 
 ---
 
-## License
-
-Copyright © 2026 **ThemoO** · released under the [MIT License](LICENSE).
-
-| Doc | Purpose |
-|-----|---------|
-| [NOTICE](NOTICE) | Attribution & third-party notes |
-| [CHANGELOG](CHANGELOG.md) | Version history |
-| [SECURITY](SECURITY.md) | Vulnerability reports |
-| [CONTRIBUTING](CONTRIBUTING.md) | Contribution guide |
-
----
+<p align="center">
 
 ## Support
 
-<p align="center">
-  <a href="https://discord.com/invite/fJTSA6vnVQ">
-    <img width="448" height="64" alt="Join Extra Flux Discord" src="https://github.com/user-attachments/assets/93477f0a-4350-4d56-a0d8-f38bb3bf0c21">
-  </a>
+<a href="https://discord.com/invite/fJTSA6vnVQ">
+  <img width="448" height="64" alt="Join Extra Flux Discord" src="https://github.com/user-attachments/assets/93477f0a-4350-4d56-a0d8-f38bb3bf0c21">
+</a>
+
+<br><br>
+
+**Discord** · `@m_1z.4`<br>
+**Server** · [Extra Flux](https://discord.com/invite/fJTSA6vnVQ)<br>
+**In-game** · `/extranpc about`
+
 </p>
 
-| | |
-|---|---|
-| **Discord user** | `@m_1z.4` |
-| **Support server** | [discord.com/invite/fJTSA6vnVQ](https://discord.com/invite/fJTSA6vnVQ) |
-| **In-game** | `/extranpc about` |
+---
+
+<p align="center">
+
+## License
+
+Copyright © 2026 **ThemoO**<br>
+Released under the [MIT License](LICENSE)
+
+<br>
+
+[NOTICE](NOTICE) ·
+[CHANGELOG](CHANGELOG.md) ·
+[SECURITY](SECURITY.md) ·
+[CONTRIBUTING](CONTRIBUTING.md)
+
+</p>
 
 ---
 

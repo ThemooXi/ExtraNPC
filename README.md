@@ -20,8 +20,7 @@
 
 ## About
 
-ExtraNPC is a **standalone** Paper plugin.  
-No Citizens. No Shopkeepers. No required soft-dependencies.
+ExtraNPC is a **standalone** Paper plugin. No required soft-dependencies.
 
 Create player-model NPCs, animals, and mobs with a full in-game GUI — skins, click commands, holograms, particles, and a built-in trade shop.
 

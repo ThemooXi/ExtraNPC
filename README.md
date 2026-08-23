@@ -187,6 +187,9 @@ plugins/ExtraNpc/
 
 ---
 
+<img width="448" height="64" alt="badge" src="https://github.com/user-attachments/assets/93477f0a-4350-4d56-a0d8-f38bb3bf0c21" />
+
+
 ## Support
 
 - Discord: **@m_1z.4**

@@ -1,0 +1,76 @@
+# ══════════════════════════════════════════
+# ExtraNPC Messages (MiniMessage)
+# Prefix is applied from config.yml
+# Clickable help uses <click> / <hover> tags
+# ══════════════════════════════════════════
+
+# ── General ───────────────────────────────
+no-permission: "<red>No permission.</red>"
+player-only: "<red>Players only.</red>"
+unknown-command: "<red>Unknown command.</red> <gray>Try </gray><click:run_command:'/extranpc help'><hover:show_text:'<gray>Open help</gray>'><aqua>/extranpc help</aqua></click>"
+reload: "<green>Reloaded successfully.</green>"
+saved: "<green>Saved.</green>"
+cancelled: "<yellow>Cancelled.</yellow>"
+
+# ── NPC ───────────────────────────────────
+npc-created: "<green>Created</green> <yellow>{id}</yellow>"
+npc-deleted: "<red>Deleted</red> <yellow>{id}</yellow>"
+npc-not-found: "<red>NPC not found:</red> <yellow>{id}</yellow>"
+npc-exists: "<red>Already exists:</red> <yellow>{id}</yellow>"
+npc-moved: "<green>Moved</green> <yellow>{id}</yellow> <gray>to you</gray>"
+npc-selected: "<green>Selected</green> <yellow>{id}</yellow>"
+npc-teleported: "<green>Teleported to</green> <yellow>{id}</yellow>"
+invalid-type: "<red>Invalid NPC type.</red>"
+list-header: "<aqua><bold>NPCs</bold></aqua> <dark_gray>(</dark_gray><white>{count}</white><dark_gray>)</dark_gray>"
+list-entry: "<dark_gray>•</dark_gray> <click:run_command:'/extranpc edit {id}'><hover:show_text:'<gray>Click to edit</gray>'><yellow>{id}</yellow></click> <dark_gray>|</dark_gray> {name} <dark_gray>|</dark_gray> <white>{type}</white>"
+
+# ── Input ─────────────────────────────────
+input-cancel: "<dark_gray>Type </dark_gray><yellow>cancel</yellow><dark_gray> to abort</dark_gray>"
+input-name: "<green>Enter display name:</green>"
+input-skin-name: "<green>Enter player name for skin:</green>"
+input-skin-url: "<green>Enter skin texture URL:</green>"
+input-command: "<green>Enter command</green> <dark_gray>(no /)</dark_gray><green> · use</green> <yellow>{player}</yellow>"
+input-permission: "<green>Enter permission</green> <dark_gray>or</dark_gray> <yellow>none</yellow><green>:</green>"
+input-id: "<green>Enter unique NPC id:</green>"
+
+# ── Shop / Interact ───────────────────────
+shop-empty: "<red>No trades yet.</red> <gray>Add recipes in the shop editor.</gray>"
+shop-enabled: "<green>Shop enabled.</green> <gray>Players can trade on right-click.</gray>"
+shop-disabled: "<red>Shop disabled.</red> <gray>Right-click will not open the shop.</gray>"
+cooldown: "<red>Wait</red> <yellow>{seconds}s</yellow>"
+no-interact-perm: "<red>You can't use this NPC.</red>"
+citizens-required: "<red>Player NPC engine error.</red>"
+npc-engine-error: "<red>Player NPC engine failed to start.</red> <gray>Check console.</gray>"
+
+# ── About / Credits ───────────────────────
+about:
+  - ""
+  - "<gradient:#00E5A8:#00B4D8><bold>ExtraNPC</bold></gradient> <dark_gray>·</dark_gray> <gray>Advanced NPC Framework</gray>"
+  - "<dark_gray>────────────────────────────────</dark_gray>"
+  - "<gray>Author</gray>  <white>ThemoO</white>"
+  - "<gray>Discord</gray> <aqua>@m_1z.4</aqua>"
+  - "<gray>Support</gray> <click:open_url:'https://discord.com/invite/fJTSA6vnVQ'><hover:show_text:'<green>Join Discord</green>'><aqua>discord.com/invite/fJTSA6vnVQ</aqua></click>"
+  - "<dark_gray>────────────────────────────────</dark_gray>"
+  - "<click:run_command:'/extranpc gui'><hover:show_text:'<gray>Open GUI</gray>'><green>[GUI]</green></click> <click:run_command:'/extranpc help'><hover:show_text:'<gray>Open help</gray>'><yellow>[Help]</yellow></click> <click:open_url:'https://discord.com/invite/fJTSA6vnVQ'><hover:show_text:'<gray>Support</gray>'><aqua>[Discord]</aqua></click>"
+  - ""
+
+# ── Help (clickable) ──────────────────────
+help:
+  - ""
+  - "<gradient:#00E5A8:#00B4D8><bold>ExtraNPC</bold></gradient> <dark_gray>·</dark_gray> <gray>Commands</gray>"
+  - "<dark_gray>────────────────────────────────</dark_gray>"
+  - "<click:run_command:'/extranpc gui'><hover:show_text:'<gray>Click to run</gray>'><yellow>/extranpc gui</yellow></click> <dark_gray>—</dark_gray> <white>Main GUI</white>"
+  - "<click:suggest_command:'/extranpc create '><hover:show_text:'<gray>Click to type</gray>'><yellow>/extranpc create</yellow></click> <aqua><id></aqua> <gray>[type]</gray> <dark_gray>—</dark_gray> <white>Create</white>"
+  - "<click:suggest_command:'/extranpc edit '><hover:show_text:'<gray>Click to type</gray>'><yellow>/extranpc edit</yellow></click> <aqua><id></aqua> <dark_gray>—</dark_gray> <white>Edit</white>"
+  - "<click:suggest_command:'/extranpc delete '><hover:show_text:'<gray>Click to type</gray>'><yellow>/extranpc delete</yellow></click> <aqua><id></aqua> <dark_gray>—</dark_gray> <white>Delete</white>"
+  - "<click:run_command:'/extranpc list'><hover:show_text:'<gray>Click to run</gray>'><yellow>/extranpc list</yellow></click> <dark_gray>—</dark_gray> <white>List NPCs</white>"
+  - "<click:suggest_command:'/extranpc move '><hover:show_text:'<gray>Click to type</gray>'><yellow>/extranpc move</yellow></click> <aqua><id></aqua> <dark_gray>—</dark_gray> <white>Move here</white>"
+  - "<click:run_command:'/extranpc here'><hover:show_text:'<gray>Click to run</gray>'><yellow>/extranpc here</yellow></click> <dark_gray>—</dark_gray> <white>Move selected</white>"
+  - "<click:suggest_command:'/extranpc tp '><hover:show_text:'<gray>Click to type</gray>'><yellow>/extranpc tp</yellow></click> <aqua><id></aqua> <dark_gray>—</dark_gray> <white>Teleport</white>"
+  - "<click:suggest_command:'/extranpc select '><hover:show_text:'<gray>Click to type</gray>'><yellow>/extranpc select</yellow></click> <aqua><id></aqua> <dark_gray>—</dark_gray> <white>Select</white>"
+  - "<click:run_command:'/extranpc reload'><hover:show_text:'<gray>Click to run</gray>'><yellow>/extranpc reload</yellow></click> <dark_gray>—</dark_gray> <white>Reload</white>"
+  - "<click:run_command:'/extranpc about'><hover:show_text:'<gray>Credits & support</gray>'><yellow>/extranpc about</yellow></click> <dark_gray>—</dark_gray> <white>Credits</white>"
+  - "<dark_gray>────────────────────────────────</dark_gray>"
+  - "<gray>Aliases:</gray> <aqua>/enpc</aqua> <dark_gray>·</dark_gray> <aqua>/npc</aqua>"
+  - "<gray>Support:</gray> <click:open_url:'https://discord.com/invite/fJTSA6vnVQ'><hover:show_text:'<green>Join Discord</green>'><aqua>discord.com/invite/fJTSA6vnVQ</aqua></click> <dark_gray>·</dark_gray> <aqua>@m_1z.4</aqua>"
+  - ""

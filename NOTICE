@@ -1,0 +1,16 @@
+ExtraNPC
+Copyright (c) 2026 ThemoO
+
+This product is released under the MIT License.
+See the LICENSE file for the full license text.
+
+Author: ThemoO
+Discord: @m_1z.4
+Support: https://discord.com/invite/fJTSA6vnVQ
+
+Third-party / optional integrations:
+- Paper API (PaperMC) — compile-only dependency
+- PlaceholderAPI (extendedclip) — optional soft-dependency
+
+Minecraft, Mojang, and related marks are trademarks of their respective owners.
+This project is not affiliated with Mojang Studios or Microsoft.

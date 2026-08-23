@@ -1,0 +1,26 @@
+# Changelog
+
+All notable changes to **ExtraNPC** are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.0] - 2026-08-24
+
+### Added
+- First public release of ExtraNPC
+- Standalone NPC framework for Paper (no Citizens / Shopkeepers required)
+- Native player NPCs via Paper Mannequin (real player model)
+- Animal / mob NPC types
+- Skins by Mojang player name or texture URL
+- Full in-game GUI (create, edit, list, settings, skins, particles, commands)
+- Click actions: `player:`, `console:`, `message:`
+- Built-in shop trade editor and villager merchant UI
+- Holograms, particles, look-at-player, glow, baby mode, cooldown, permissions
+- Optional PlaceholderAPI support
+- Clickable help / about messages in chat
+- Console ASCII banner with credits
+
+### Support
+- Discord: **@m_1z.4**
+- Server: [Extra Flux](https://discord.com/invite/fJTSA6vnVQ)

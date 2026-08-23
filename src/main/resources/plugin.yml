@@ -1,0 +1,24 @@
+name: ExtraNPC
+version: '${version}'
+main: me.themoo.extranpc.ExtraNPCPlugin
+api-version: '1.21'
+authors: [ ThemoO ]
+description: Standalone advanced NPC framework with real player-model (Mannequin) NPCs, GUI, shops and optional PlaceholderAPI.
+website: https://discord.com/invite/fJTSA6vnVQ
+softdepend: [ PlaceholderAPI ]
+commands:
+  extranpc:
+    description: Main ExtraNPC command
+    aliases: [ enpc, npc ]
+    permission: extranpc.admin
+    usage: /extranpc <help|about|gui|create|edit|delete|list|move|tp|here|select|reload>
+permissions:
+  extranpc.admin:
+    description: Full access to ExtraNPC
+    default: op
+  extranpc.use:
+    description: Interact with NPCs
+    default: true
+  extranpc.bypass:
+    description: Bypass NPC interaction permissions and cooldowns
+    default: op

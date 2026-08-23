@@ -1,0 +1,49 @@
+name: Bug report
+description: Report a bug in ExtraNPC
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. For faster help you can also join [Discord](https://discord.com/invite/fJTSA6vnVQ).
+  - type: input
+    id: version
+    attributes:
+      label: ExtraNPC version
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: server
+    attributes:
+      label: Server software / Minecraft version
+      placeholder: "Paper 1.21.x"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs / errors
+      render: text

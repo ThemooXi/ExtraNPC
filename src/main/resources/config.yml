@@ -1,0 +1,40 @@
+# ══════════════════════════════════════════
+# ExtraNPC Configuration
+# Author: ThemoO · Discord: @m_1z.4
+# Support: https://discord.com/invite/fJTSA6vnVQ
+# ══════════════════════════════════════════
+
+settings:
+  # Chat prefix (MiniMessage)
+  prefix: "<gradient:#00E5A8:#00B4D8><bold>ExtraNPC</bold></gradient> <dark_gray>»</dark_gray> "
+  # Show ASCII banner in console on enable/disable
+  console-banner: true
+  # Open edit GUI when admin sneak-clicks an NPC
+  sneak-edit: true
+  # Default look-at range (blocks)
+  look-range: 8.0
+  # How often NPCs look at nearby players (ticks)
+  look-interval: 5
+  # Save automatically after edits
+  auto-save: true
+  # Default interaction cooldown in seconds (0 = none)
+  default-cooldown: 0
+
+defaults:
+  name: "<yellow>New NPC</yellow>"
+  show-name: true
+  invulnerable: true
+  gravity: false
+  silent: true
+  glowing: false
+  look-at-players: true
+  collidable: false
+  baby: false
+
+storage:
+  file: npcs.yml
+
+credits:
+  author: "ThemoO"
+  discord-user: "@m_1z.4"
+  discord-invite: "https://discord.com/invite/fJTSA6vnVQ"

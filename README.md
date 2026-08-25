@@ -163,6 +163,6 @@ Released under the [MIT License](LICENSE)
 
 <br>
 
-<sub>ExtraNPC · v1.0.1 · ThemoO · @m_1z.4</sub>
+<sub>- ExtraNPC · v1.0.1 · ThemoO · @m_1z.4</sub>
 
 </div>

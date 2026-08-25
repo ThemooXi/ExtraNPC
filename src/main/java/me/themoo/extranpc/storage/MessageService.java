@@ -16,7 +16,7 @@ import java.util.Set;
 
 public final class MessageService {
 
-    private static final Set<String> NO_PREFIX_KEYS = Set.of("help", "about");
+    private static final Set<String> NO_PREFIX_KEYS = Set.of("help", "about", "support-welcome", "update-available", "update-latest");
 
     private final ExtraNPCPlugin plugin;
     private FileConfiguration messages;
@@ -34,7 +34,8 @@ public final class MessageService {
         messages = YamlConfiguration.loadConfiguration(file);
 
         // Upgrade older installs to the new professional message pack
-        if (!messages.contains("about") || !messages.contains("npc-engine-error") || !messages.isList("help")) {
+        if (!messages.contains("about") || !messages.contains("npc-engine-error") || !messages.isList("help")
+                || !messages.isList("support-welcome") || !messages.isList("update-available")) {
             plugin.saveResource("messages.yml", true);
             messages = YamlConfiguration.loadConfiguration(file);
         }
@@ -67,6 +68,24 @@ public final class MessageService {
 
     public void sendAbout(CommandSender sender) {
         sendList(sender, "about", Collections.emptyMap());
+    }
+
+    public void sendWelcome(CommandSender sender) {
+        sendList(sender, "support-welcome", Collections.emptyMap());
+    }
+
+    public void sendUpdateAvailable(CommandSender sender, String current, String latest) {
+        sendList(sender, "update-available", Map.of(
+                "current", current == null ? "" : current,
+                "latest", latest == null ? "" : latest,
+                "url", me.themoo.extranpc.util.SupportLinks.SPIGOT_URL
+        ));
+    }
+
+    public void sendUpdateLatest(CommandSender sender, String current) {
+        sendList(sender, "update-latest", Map.of(
+                "current", current == null ? "" : current
+        ));
     }
 
     public void sendList(CommandSender sender, String key, Map<String, String> placeholders) {

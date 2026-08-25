@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public final class NpcTabCompleter implements TabCompleter {
 
     private static final List<String> SUBS = List.of(
-            "help", "about", "gui", "create", "edit", "delete", "list", "move", "here", "tp", "select", "reload"
+            "help", "about", "update", "gui", "create", "edit", "delete", "list", "move", "here", "tp", "select", "reload"
     );
 
     private final ExtraNPCPlugin plugin;

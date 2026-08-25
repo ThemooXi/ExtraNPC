@@ -178,6 +178,14 @@ public final class NpcCommand implements CommandExecutor {
                 plugin.reloadAll();
                 plugin.getMessages().send(sender, "reload");
             }
+            case "update" -> {
+                if (plugin.getUpdateChecker() == null) {
+                    plugin.getMessages().send(sender, "update-check-disabled");
+                    return true;
+                }
+                plugin.getMessages().send(sender, "update-check-started");
+                plugin.getUpdateChecker().manualCheck(sender);
+            }
             default -> plugin.getMessages().send(sender, "unknown-command");
         }
         return true;

@@ -5,6 +5,20 @@ All notable changes to **ExtraNPC** are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-08-25
+
+### Added
+- Discord support reminders for operators (welcome on join, optional repeat every 7 days)
+- Update checker with Spigot lookup and Discord links in console / in-game messages
+- `/extranpc update` command for manual update checks
+- `support-reminder.yml` to track reminder state per operator
+
+### Changed
+- Clearer console banner with Discord support line
+- Enhanced `/extranpc help` and `/extranpc about` with Discord call-to-action
+
+---
+
 ## [1.0.0] - 2026-08-24
 
 ### Added

@@ -33,10 +33,11 @@ public final class ConsoleBanner {
         log.info("  Optional    : PlaceholderAPI (soft)");
         log.info(line);
         log.info("  Author      : ThemoO");
-        log.info("  Discord     : @m_1z.4");
-        log.info("  Support     : https://discord.com/invite/fJTSA6vnVQ");
+        log.info("  Discord     : " + SupportLinks.DISCORD_USER);
+        log.info("  Support     : " + SupportLinks.DISCORD_INVITE);
         log.info(line);
-        log.info("  Tip: /extranpc gui  |  /extranpc help  |  /extranpc about");
+        log.info("  Join Discord for help, updates & previews (Extra Flux)");
+        log.info("  Tip: /extranpc gui  |  /extranpc help  |  /extranpc about  |  /extranpc update");
         log.info(line);
         log.info("");
     }
@@ -48,7 +49,7 @@ public final class ConsoleBanner {
         log.info(line);
         log.info("  ExtraNPC v" + plugin.getDescription().getVersion() + " disabled");
         log.info("  All NPCs saved & despawned safely");
-        log.info("  Discord: @m_1z.4  ·  https://discord.com/invite/fJTSA6vnVQ");
+        log.info("  Support: " + SupportLinks.DISCORD_INVITE);
         log.info(line);
         log.info("");
     }

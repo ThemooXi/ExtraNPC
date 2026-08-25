@@ -19,6 +19,17 @@ settings:
   auto-save: true
   # Default interaction cooldown in seconds (0 = none)
   default-cooldown: 0
+  # Discord welcome reminder for operators (not spam — once, then every N days)
+  support-reminder:
+    enabled: true
+    welcome-op-on-join: true
+    repeat-days: 7
+
+update-checker:
+  enabled: true
+  check-on-startup: true
+  notify-console: true
+  notify-staff: true
 
 defaults:
   name: "<yellow>New NPC</yellow>"

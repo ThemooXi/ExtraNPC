@@ -11,7 +11,7 @@ commands:
     description: Main ExtraNPC command
     aliases: [ enpc, npc ]
     permission: extranpc.admin
-    usage: /extranpc <help|about|gui|create|edit|delete|list|move|tp|here|select|reload>
+    usage: /extranpc <help|about|update|gui|create|edit|delete|list|move|tp|here|select|reload>
 permissions:
   extranpc.admin:
     description: Full access to ExtraNPC

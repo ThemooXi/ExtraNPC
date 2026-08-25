@@ -49,7 +49,8 @@ about:
   - "<dark_gray>────────────────────────────────</dark_gray>"
   - "<gray>Author</gray>  <white>ThemoO</white>"
   - "<gray>Discord</gray> <aqua>@m_1z.4</aqua>"
-  - "<gray>Support</gray> <click:open_url:'https://discord.com/invite/fJTSA6vnVQ'><hover:show_text:'<green>Join Discord</green>'><aqua>discord.com/invite/fJTSA6vnVQ</aqua></click>"
+  - "<gray>Support</gray> <click:open_url:'https://discord.com/invite/fJTSA6vnVQ'><hover:show_text:'<green>Join Discord — help, updates & previews</green>'><aqua>discord.com/invite/fJTSA6vnVQ</aqua></click>"
+  - "<gray>Join</gray> <white>Extra Flux</white> <gray>for faster support and early update news.</gray>"
   - "<dark_gray>────────────────────────────────</dark_gray>"
   - "<click:run_command:'/extranpc gui'><hover:show_text:'<gray>Open GUI</gray>'><green>[GUI]</green></click> <click:run_command:'/extranpc help'><hover:show_text:'<gray>Open help</gray>'><yellow>[Help]</yellow></click> <click:open_url:'https://discord.com/invite/fJTSA6vnVQ'><hover:show_text:'<gray>Support</gray>'><aqua>[Discord]</aqua></click>"
   - ""
@@ -72,5 +73,34 @@ help:
   - "<click:run_command:'/extranpc about'><hover:show_text:'<gray>Credits & support</gray>'><yellow>/extranpc about</yellow></click> <dark_gray>—</dark_gray> <white>Credits</white>"
   - "<dark_gray>────────────────────────────────</dark_gray>"
   - "<gray>Aliases:</gray> <aqua>/enpc</aqua> <dark_gray>·</dark_gray> <aqua>/npc</aqua>"
-  - "<gray>Support:</gray> <click:open_url:'https://discord.com/invite/fJTSA6vnVQ'><hover:show_text:'<green>Join Discord</green>'><aqua>discord.com/invite/fJTSA6vnVQ</aqua></click> <dark_gray>·</dark_gray> <aqua>@m_1z.4</aqua>"
+  - "<gray>Support:</gray> <click:open_url:'https://discord.com/invite/fJTSA6vnVQ'><hover:show_text:'<green>Join Discord — help, updates & previews</green>'><aqua>discord.com/invite/fJTSA6vnVQ</aqua></click> <dark_gray>·</dark_gray> <aqua>@m_1z.4</aqua>"
+  - "<gray>Tip:</gray> <white>Join Discord for faster support and early updates.</white>"
+  - ""
+
+# ── OP welcome (first join / periodic reminder) ──
+support-welcome:
+  - ""
+  - "<gradient:#00E5A8:#00B4D8><bold>Thanks for using ExtraNPC!</bold></gradient>"
+  - "<gray>Join our Discord for support, updates & previews:</gray>"
+  - "<click:open_url:'https://discord.com/invite/fJTSA6vnVQ'><hover:show_text:'<green>Click to join Extra Flux</green>'><aqua>discord.com/invite/fJTSA6vnVQ</aqua></click>"
+  - "<gray>Commands:</gray> <click:run_command:'/extranpc help'><yellow>/extranpc help</yellow></click> <dark_gray>·</dark_gray> <click:run_command:'/extranpc about'><yellow>/extranpc about</yellow></click>"
+  - ""
+
+# ── Update checker ────────────────────────
+update-check-started: "<yellow>Checking for updates...</yellow>"
+update-check-disabled: "<yellow>Update checker is disabled in config.yml.</yellow>"
+update-check-failed: "<red>Could not check for updates.</red> <gray>Try again later or visit Discord.</gray>"
+
+update-available:
+  - ""
+  - "<yellow><bold>A new ExtraNPC update is available!</bold></yellow>"
+  - "<gray>Current</gray> <white>{current}</white> <dark_gray>→</dark_gray> <green>{latest}</green>"
+  - "<click:open_url:'{url}'><hover:show_text:'<gray>Open Spigot page</gray>'><aqua>Download on Spigot</aqua></click>"
+  - "<gray>Support & updates:</gray> <click:open_url:'https://discord.com/invite/fJTSA6vnVQ'><hover:show_text:'<green>Join Discord</green>'><aqua>discord.com/invite/fJTSA6vnVQ</aqua></click>"
+  - ""
+
+update-latest:
+  - ""
+  - "<green>You are running the latest ExtraNPC version.</green> <gray>({current})</gray>"
+  - "<gray>Join Discord for support & previews:</gray> <click:open_url:'https://discord.com/invite/fJTSA6vnVQ'><aqua>discord.com/invite/fJTSA6vnVQ</aqua></click>"
   - ""

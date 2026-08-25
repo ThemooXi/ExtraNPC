@@ -8,11 +8,13 @@ import me.themoo.extranpc.integration.PlaceholderHook;
 import me.themoo.extranpc.integration.PlayerNpcProvider;
 import me.themoo.extranpc.listener.ChatInputListener;
 import me.themoo.extranpc.listener.NpcListener;
+import me.themoo.extranpc.listener.SupportReminderListener;
 import me.themoo.extranpc.manager.NpcManager;
 import me.themoo.extranpc.manager.SkinManager;
 import me.themoo.extranpc.storage.MessageService;
 import me.themoo.extranpc.storage.NpcStorage;
 import me.themoo.extranpc.util.ConsoleBanner;
+import me.themoo.extranpc.util.SimpleUpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,6 +29,8 @@ public final class ExtraNPCPlugin extends JavaPlugin {
     private PlaceholderHook placeholderHook;
     private ChatInputListener chatInputListener;
     private PlayerNpcProvider playerNpcProvider;
+    private SupportReminderListener supportReminderListener;
+    private SimpleUpdateChecker updateChecker;
 
     @Override
     public void onEnable() {
@@ -57,6 +61,15 @@ public final class ExtraNPCPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new NpcListener(this), this);
         getServer().getPluginManager().registerEvents(new GuiListener(this), this);
         getServer().getPluginManager().registerEvents(chatInputListener, this);
+        this.supportReminderListener = new SupportReminderListener(this);
+        getServer().getPluginManager().registerEvents(supportReminderListener, this);
+
+        if (getConfig().getBoolean("update-checker.enabled", true)) {
+            this.updateChecker = new SimpleUpdateChecker(this);
+            if (getConfig().getBoolean("update-checker.check-on-startup", true)) {
+                Bukkit.getScheduler().runTaskLater(this, () -> updateChecker.checkForUpdates(), 60L);
+            }
+        }
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             npcManager.loadAll();
@@ -119,5 +132,9 @@ public final class ExtraNPCPlugin extends JavaPlugin {
 
     public PlayerNpcProvider getPlayerNpcProvider() {
         return playerNpcProvider;
+    }
+
+    public SimpleUpdateChecker getUpdateChecker() {
+        return updateChecker;
     }
 }

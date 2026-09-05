@@ -3,6 +3,7 @@ package me.themoo.extranpc;
 import me.themoo.extranpc.command.NpcCommand;
 import me.themoo.extranpc.command.NpcTabCompleter;
 import me.themoo.extranpc.gui.GuiListener;
+import me.themoo.extranpc.integration.ArmorStandPlayerNpcProvider;
 import me.themoo.extranpc.integration.NativePlayerNpcProvider;
 import me.themoo.extranpc.integration.PlaceholderHook;
 import me.themoo.extranpc.integration.PlayerNpcProvider;
@@ -14,6 +15,7 @@ import me.themoo.extranpc.manager.SkinManager;
 import me.themoo.extranpc.storage.MessageService;
 import me.themoo.extranpc.storage.NpcStorage;
 import me.themoo.extranpc.util.ConsoleBanner;
+import me.themoo.extranpc.util.ServerCompat;
 import me.themoo.extranpc.util.SimpleUpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -46,8 +48,11 @@ public final class ExtraNPCPlugin extends JavaPlugin {
         this.placeholderHook.hook();
         ConsoleBanner.printHook("PlaceholderAPI", placeholderHook.isEnabled());
 
-        this.playerNpcProvider = new NativePlayerNpcProvider(this);
-        ConsoleBanner.printHook("NativePlayerNPC", playerNpcProvider.isAvailable());
+        this.playerNpcProvider = createPlayerNpcProvider();
+        ConsoleBanner.printHook("PlayerNPC/" + playerNpcProvider.getClass().getSimpleName()
+                .replace("PlayerNpcProvider", ""), playerNpcProvider.isAvailable());
+        getLogger().info("Minecraft " + ServerCompat.minecraftVersionLabel()
+                + " · player NPCs: " + ServerCompat.playerNpcEngineName());
 
         this.npcManager = new NpcManager(this);
 
@@ -98,7 +103,7 @@ public final class ExtraNPCPlugin extends JavaPlugin {
         messages.reload();
         npcManager.saveAll();
         npcManager.despawnAll();
-        playerNpcProvider = new NativePlayerNpcProvider(this);
+        playerNpcProvider = createPlayerNpcProvider();
         npcManager.loadAll();
     }
 
@@ -136,5 +141,13 @@ public final class ExtraNPCPlugin extends JavaPlugin {
 
     public SimpleUpdateChecker getUpdateChecker() {
         return updateChecker;
+    }
+
+    private PlayerNpcProvider createPlayerNpcProvider() {
+        NativePlayerNpcProvider mannequin = new NativePlayerNpcProvider(this);
+        if (mannequin.isAvailable()) {
+            return mannequin;
+        }
+        return new ArmorStandPlayerNpcProvider(this);
     }
 }

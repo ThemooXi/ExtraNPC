@@ -28,13 +28,9 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
 
     public NativePlayerNpcProvider(ExtraNPCPlugin plugin) {
         this.plugin = plugin;
-        boolean ok = false;
-        try {
-            Class.forName("org.bukkit.entity.Mannequin");
-            ok = true;
+        boolean ok = me.themoo.extranpc.util.ServerCompat.hasMannequin();
+        if (ok) {
             plugin.getLogger().info("Mannequin player NPCs ready (real player model).");
-        } catch (ClassNotFoundException ex) {
-            plugin.getLogger().severe("Mannequin entity missing — update Paper. PLAYER NPCs will not spawn.");
         }
         this.available = ok;
     }
@@ -61,7 +57,11 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
 
         Mannequin mannequin = location.getWorld().spawn(location, Mannequin.class, entity -> {
             configure(entity, data);
-            applyProfile(entity, data);
+            try {
+                applyProfile(entity, data);
+            } catch (Throwable ex) {
+                plugin.getLogger().warning("Failed to apply skin for '" + data.getId() + "': " + ex.getMessage());
+            }
         });
 
         data.setEntityUuid(mannequin.getUniqueId());
@@ -88,9 +88,12 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
                 data.getId()
         );
         try {
-            var speed = entity.getAttribute(Attribute.MOVEMENT_SPEED);
-            if (speed != null) {
-                speed.setBaseValue(0.0);
+            Attribute speedAttr = me.themoo.extranpc.util.ServerCompat.movementSpeedAttribute();
+            if (speedAttr != null) {
+                var speed = entity.getAttribute(speedAttr);
+                if (speed != null) {
+                    speed.setBaseValue(0.0);
+                }
             }
         } catch (Throwable ignored) {
         }
@@ -233,6 +236,7 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
         return plugin.getServer().getEntity(data.getEntityUuid());
     }
 
+    @Override
     public void tickLook(NpcData data) {
         if (!data.isLookAtPlayers()) {
             return;

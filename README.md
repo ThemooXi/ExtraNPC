@@ -10,7 +10,7 @@
 
 [![Release](https://img.shields.io/github/v/release/ThemooXi/ExtraNPC?style=for-the-badge&color=00B4D8)](https://github.com/ThemooXi/ExtraNPC/releases/latest)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Paper](https://img.shields.io/badge/Paper-1.21%2B-00A98F?style=for-the-badge)](https://papermc.io)
+[![Paper](https://img.shields.io/badge/Paper-1.21%2B%20%2F%2026.1-00A98F?style=for-the-badge)](https://papermc.io)
 [![Discord](https://img.shields.io/badge/Discord-Extra%20Flux-5865F2?style=for-the-badge)](https://discord.com/invite/fJTSA6vnVQ)
 
 </div>
@@ -26,7 +26,7 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 
 ## Features
 
-- **Player NPCs** — real player model via Paper Mannequin
+- **Player NPCs** — real player model via Paper Mannequin (ArmorStand fallback on older 1.21)
 - **Mob NPCs** — animals and mobs as frozen NPCs
 - **Skins** — Mojang player name or texture URL
 - **Click actions** — `player:` · `console:` · `message:`
@@ -41,15 +41,15 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 
 | Requirement | Details |
 |:------------|:--------|
-| Server | Paper (or fork) `1.21+` |
-| Java | `21+` |
+| Server | Paper (or fork) `1.21+` including `26.1` / `26.2` |
+| Java | `21+` (Java `25` on Minecraft 26.1+ servers) |
 | Dependencies | None required |
 
 ---
 
 ## Installation
 
-1. Download **[ExtraNPC-1.0.1.jar](https://github.com/ThemooXi/ExtraNPC/releases/latest)**
+1. Download **[ExtraNPC-1.0.2.jar](https://github.com/ThemooXi/ExtraNPC/releases/latest)**
 2. Put the jar in your `plugins` folder
 3. Restart the server
 4. Run `/extranpc gui`
@@ -123,7 +123,7 @@ plugins/ExtraNpc/
 gradlew.bat build
 ```
 
-Output: `build/libs/ExtraNPC-1.0.1.jar`
+Output: `build/libs/ExtraNPC-1.0.2.jar`
 
 ---
 
@@ -163,6 +163,6 @@ Released under the [MIT License](LICENSE)
 
 <br>
 
-<sub>- ExtraNPC · v1.0.1 · ThemoO · @m_1z.4</sub>
+<sub>- ExtraNPC · v1.0.2 · ThemoO · @m_1z.4</sub>
 
 </div>

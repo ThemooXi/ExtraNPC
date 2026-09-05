@@ -76,6 +76,10 @@ public final class NpcCommand implements CommandExecutor {
                         return true;
                     }
                 }
+                if (!type.isAvailable()) {
+                    plugin.getMessages().send(player, "invalid-type");
+                    return true;
+                }
                 if (type.isPlayerLike() && !plugin.getNpcManager().canCreatePlayerNpc()) {
                     plugin.getMessages().send(player, "npc-engine-error");
                     return true;

@@ -14,7 +14,7 @@ public final class ConsoleBanner {
 
     public static void printEnable(ExtraNPCPlugin plugin, int npcCount, boolean nativePlayers) {
         Logger log = plugin.getLogger();
-        String version = plugin.getDescription().getVersion();
+        String version = ServerCompat.pluginVersion(plugin);
         String line = "════════════════════════════════════════════════════════";
 
         log.info("");
@@ -28,8 +28,11 @@ public final class ConsoleBanner {
         log.info("  Advanced NPC Framework  ·  v" + version);
         log.info(line);
         log.info("  Status      : ENABLED");
+        log.info("  Minecraft   : " + ServerCompat.minecraftVersionLabel());
         log.info("  NPCs        : " + npcCount + " loaded");
-        log.info("  Player NPCs : " + (nativePlayers ? "NATIVE (standalone)" : "UNAVAILABLE"));
+        log.info("  Player NPCs : " + (nativePlayers
+                ? ServerCompat.playerNpcEngineName().toUpperCase() + " (standalone)"
+                : "UNAVAILABLE"));
         log.info("  Optional    : PlaceholderAPI (soft)");
         log.info(line);
         log.info("  Author      : ThemoO");
@@ -47,7 +50,7 @@ public final class ConsoleBanner {
         String line = "════════════════════════════════════════════════════════";
         log.info("");
         log.info(line);
-        log.info("  ExtraNPC v" + plugin.getDescription().getVersion() + " disabled");
+        log.info("  ExtraNPC v" + ServerCompat.pluginVersion(plugin) + " disabled");
         log.info("  All NPCs saved & despawned safely");
         log.info("  Support: " + SupportLinks.DISCORD_INVITE);
         log.info(line);

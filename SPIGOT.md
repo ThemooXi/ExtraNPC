@@ -10,10 +10,10 @@
 |--------|--------|
 | **Resource Title** | `ExtraNPC` |
 | **Tag line** | `Standalone advanced NPC framework for Paper — GUI, player NPCs, shops` |
-| **Version** | `1.0.0` |
+| **Version** | `1.0.2` |
 | **Category** | `Spigot` → **Mechanics** |
 | **Resource icon** | `assets/extranpc-logo.png` |
-| **Upload file** | `build/libs/ExtraNPC-1.0.0.jar` |
+| **Upload file** | `build/libs/ExtraNPC-1.0.2.jar` |
 | **Source code URL** | `https://github.com/ThemooXi/ExtraNPC` |
 | **Donation / Support URL** | `https://discord.com/invite/fJTSA6vnVQ` |
 | **Languages Supported** | `English` |
@@ -37,7 +37,7 @@ GUI · Native Player NPCs · Trade Shops · PlaceholderAPI
 
 [URL='https://github.com/ThemooXi/ExtraNPC/releases/latest'][IMG]https://img.shields.io/github/v/release/ThemooXi/ExtraNPC?style=for-the-badge&color=00B4D8[/IMG][/URL]
 [URL='https://github.com/ThemooXi/ExtraNPC/blob/main/LICENSE'][IMG]https://img.shields.io/badge/License-MIT-green?style=for-the-badge[/IMG][/URL]
-[URL='https://papermc.io'][IMG]https://img.shields.io/badge/Paper-1.21%2B-00A98F?style=for-the-badge[/IMG][/URL]
+[URL='https://papermc.io'][IMG]https://img.shields.io/badge/Paper-1.21%2B%20%2F%2026.1-00A98F?style=for-the-badge[/IMG][/URL]
 [URL='https://discord.com/invite/fJTSA6vnVQ'][IMG]https://img.shields.io/badge/Discord-Extra%20Flux-5865F2?style=for-the-badge[/IMG][/URL]
 [/CENTER]
 
@@ -49,7 +49,7 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 [CENTER][S]                                                            [/S][/CENTER]
 [B][SIZE=5]Features[/SIZE][/B]
 [LIST]
-[*][B]Player NPCs[/B] — real player model via Paper Mannequin
+[*][B]Player NPCs[/B] — real player model via Paper Mannequin (ArmorStand fallback on older 1.21)
 [*][B]Mob NPCs[/B] — animals and mobs as frozen NPCs
 [*][B]Skins[/B] — Mojang player name or texture URL
 [*][B]Click actions[/B] — player: · console: · message:
@@ -62,7 +62,7 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 [CENTER][S]                                                            [/S][/CENTER]
 [B][SIZE=5]Requirements[/SIZE][/B]
 [LIST]
-[*]Server: Paper (or fork) 1.21+
+[*]Server: Paper (or fork) 1.21+ including 26.1 / 26.2
 [*]Java: 21+
 [*]Dependencies: None required
 [/LIST]
@@ -70,7 +70,7 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 [CENTER][S]                                                            [/S][/CENTER]
 [B][SIZE=5]Installation[/SIZE][/B]
 [LIST=1]
-[*]Download ExtraNPC-1.0.0.jar
+[*]Download ExtraNPC-1.0.2.jar
 [*]Put the jar in your plugins folder
 [*]Restart the server
 [*]Run /extranpc gui
@@ -133,6 +133,6 @@ In-game: /extranpc about
 Copyright © 2026 ThemoO
 Released under the MIT License
 
-ExtraNPC · v1.0.0 · ThemoO · @m_1z.4
+ExtraNPC · v1.0.2 · ThemoO · @m_1z.4
 [/CENTER]
 ```

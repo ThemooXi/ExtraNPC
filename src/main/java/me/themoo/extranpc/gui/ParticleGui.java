@@ -38,6 +38,9 @@ public final class ParticleGui {
 
         int slot = 0;
         for (String particle : PARTICLES) {
+            if (!"NONE".equals(particle) && me.themoo.extranpc.util.ServerCompat.particle(particle) == null) {
+                continue;
+            }
             boolean selected = data.getParticle().equalsIgnoreCase(particle);
             ItemStack item = new ItemBuilder(selected ? Material.LIME_DYE : Material.GRAY_DYE)
                     .name((selected ? "<green>" : "<white>") + particle + "</white>")

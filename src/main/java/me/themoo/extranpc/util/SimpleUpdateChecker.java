@@ -32,7 +32,7 @@ public final class SimpleUpdateChecker implements Listener {
     public SimpleUpdateChecker(ExtraNPCPlugin plugin) {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
-        this.currentVersion = plugin.getDescription().getVersion();
+        this.currentVersion = ServerCompat.pluginVersion(plugin);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

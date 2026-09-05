@@ -255,7 +255,13 @@ public final class NpcManager {
     }
 
     private void spawnMobNpc(NpcData data, Location location) {
-        Entity entity = location.getWorld().spawn(location, data.getType().getEntityType().getEntityClass(), spawned -> {
+        Class<? extends Entity> entityClass = data.getType().getEntityClass();
+        if (entityClass == null || !data.getType().isAvailable()) {
+            plugin.getLogger().warning("Cannot spawn NPC " + data.getId()
+                    + " — type " + data.getType().name() + " is not available on this Minecraft version.");
+            return;
+        }
+        Entity entity = location.getWorld().spawn(location, entityClass, spawned -> {
             spawned.getPersistentDataContainer().set(pluginKey(), PersistentDataType.STRING, data.getId());
             spawned.customName(TextUtil.parse(data.getDisplayName()));
             spawned.setCustomNameVisible(data.isShowName());
@@ -276,9 +282,12 @@ public final class NpcManager {
                     living.getEquipment().setBootsDropChance(0f);
                 }
                 try {
-                    var attr = living.getAttribute(Attribute.MOVEMENT_SPEED);
-                    if (attr != null) {
-                        attr.setBaseValue(0);
+                    Attribute speedAttr = me.themoo.extranpc.util.ServerCompat.movementSpeedAttribute();
+                    if (speedAttr != null) {
+                        var attr = living.getAttribute(speedAttr);
+                        if (attr != null) {
+                            attr.setBaseValue(0);
+                        }
                     }
                 } catch (Throwable ignored) {
                 }
@@ -308,6 +317,10 @@ public final class NpcManager {
         removeHolograms(data.getId());
         Location base = data.getLocation();
         if (base == null || base.getWorld() == null || data.getHologramLines().isEmpty()) {
+            return;
+        }
+        if (!me.themoo.extranpc.util.ServerCompat.hasTextDisplay()) {
+            plugin.getLogger().warning("TextDisplay holograms are not available on this server — skipping holograms for " + data.getId());
             return;
         }
         List<UUID> ids = new ArrayList<>();
@@ -414,8 +427,9 @@ public final class NpcManager {
                 continue;
             }
             if (data.getType().isPlayerLike()) {
-                if (players() instanceof me.themoo.extranpc.integration.NativePlayerNpcProvider nativeProvider) {
-                    nativeProvider.tickLook(data);
+                PlayerNpcProvider provider = players();
+                if (provider != null) {
+                    provider.tickLook(data);
                 }
                 continue;
             }
@@ -451,9 +465,12 @@ public final class NpcManager {
                 continue;
             }
             try {
-                Particle particle = Particle.valueOf(data.getParticle().toUpperCase(Locale.ROOT));
+                Particle particle = me.themoo.extranpc.util.ServerCompat.particle(data.getParticle());
+                if (particle == null) {
+                    continue;
+                }
                 entity.getWorld().spawnParticle(particle, entity.getLocation().add(0, 1.2, 0), 4, 0.25, 0.35, 0.25, 0.01);
-            } catch (IllegalArgumentException ignored) {
+            } catch (Throwable ignored) {
             }
         }
     }

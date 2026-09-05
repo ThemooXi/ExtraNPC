@@ -35,34 +35,10 @@ public final class TypeSelectGui {
             if (slot >= 45) {
                 break;
             }
-            Material icon = switch (type) {
-                case PLAYER -> Material.PLAYER_HEAD;
-                case VILLAGER -> Material.EMERALD;
-                case COW -> Material.BEEF;
-                case PIG -> Material.PORKCHOP;
-                case SHEEP -> Material.WHITE_WOOL;
-                case CHICKEN -> Material.EGG;
-                case WOLF -> Material.BONE;
-                case CAT -> Material.COD;
-                case HORSE -> Material.SADDLE;
-                case FOX -> Material.SWEET_BERRIES;
-                case RABBIT -> Material.RABBIT_FOOT;
-                case BEE -> Material.HONEYCOMB;
-                case PANDA -> Material.BAMBOO;
-                case IRON_GOLEM -> Material.IRON_BLOCK;
-                case SNOW_GOLEM -> Material.SNOWBALL;
-                case ZOMBIE -> Material.ROTTEN_FLESH;
-                case SKELETON -> Material.BONE;
-                case CREEPER -> Material.GUNPOWDER;
-                case ENDERMAN -> Material.ENDER_PEARL;
-                case BLAZE -> Material.BLAZE_ROD;
-                case WITCH -> Material.GLASS_BOTTLE;
-                case PILLAGER -> Material.CROSSBOW;
-                case ALLAY -> Material.AMETHYST_SHARD;
-                case CAMEL -> Material.CACTUS;
-                case SNIFFER -> Material.TORCHFLOWER_SEEDS;
-                case ARMADILLO -> Material.ARMADILLO_SCUTE;
-            };
+            if (!type.isAvailable()) {
+                continue;
+            }
+            Material icon = type.icon();
             ItemStack item = new ItemBuilder(icon)
                     .name((data.getType() == type ? "<green>" : "<white>") + type.name() + "</white>")
                     .loreMini(data.getType() == type ? "<gray>Selected</gray>" : "<yellow>Click to select</yellow>")

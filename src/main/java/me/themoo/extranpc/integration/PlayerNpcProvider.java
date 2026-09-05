@@ -22,4 +22,7 @@ public interface PlayerNpcProvider {
     void applySettings(NpcData data);
 
     Entity getEntity(NpcData data);
+
+    default void tickLook(NpcData data) {
+    }
 }

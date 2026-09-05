@@ -26,7 +26,7 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 
 ## Features
 
-- **Player NPCs** — real player model via Paper Mannequin
+- **Player NPCs** — native Paper Mannequin on modern releases, compatible player-head fallback on older releases
 - **Mob NPCs** — animals and mobs as frozen NPCs
 - **Skins** — Mojang player name or texture URL
 - **Click actions** — `player:` · `console:` · `message:`
@@ -41,9 +41,14 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 
 | Requirement | Details |
 |:------------|:--------|
-| Server | Paper (or fork) `1.21+` |
-| Java | `21+` |
+| Server | Paper (or compatible fork) `1.21` through `26.x` |
+| Java | `21+` for Minecraft 1.21; `25+` for Minecraft 26.x |
 | Dependencies | None required |
+
+The plugin is compiled against Paper 1.21 and avoids direct links to newer
+server classes, so one JAR works across the supported range. Paper's native
+Mannequin is used when available (including 26.1); older 1.21 releases use a
+player-head ArmorStand fallback.
 
 ---
 
@@ -117,13 +122,19 @@ plugins/ExtraNpc/
 
 ```bash
 # Linux / macOS
-./gradlew build
+gradle build
 
 # Windows
 gradlew.bat build
 ```
 
 Output: `build/libs/ExtraNPC-1.0.1.jar`
+
+To compile-check another Paper API version:
+
+```bash
+gradle clean build -PpaperApiVersion=26.1.2.build.74-stable
+```
 
 ---
 

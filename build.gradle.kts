@@ -5,6 +5,9 @@ plugins {
 group = "me.themoo"
 version = "1.0.1"
 
+val paperApiVersion = providers.gradleProperty("paperApiVersion")
+    .orElse("1.21-R0.1-SNAPSHOT")
+
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
@@ -19,8 +22,8 @@ repositories {
 }
 
 dependencies {
-    // Paper 26.2 / 1.21.11+ — Mannequin player NPCs
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    // Compile against the compatibility floor. Newer APIs are accessed reflectively.
+    compileOnly("io.papermc.paper:paper-api:${paperApiVersion.get()}")
     compileOnly("me.clip:placeholderapi:2.11.6")
 }
 

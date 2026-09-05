@@ -9,7 +9,6 @@ import me.themoo.extranpc.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -274,13 +273,6 @@ public final class NpcManager {
                     living.getEquipment().setChestplateDropChance(0f);
                     living.getEquipment().setLeggingsDropChance(0f);
                     living.getEquipment().setBootsDropChance(0f);
-                }
-                try {
-                    var attr = living.getAttribute(Attribute.MOVEMENT_SPEED);
-                    if (attr != null) {
-                        attr.setBaseValue(0);
-                    }
-                } catch (Throwable ignored) {
                 }
             }
 

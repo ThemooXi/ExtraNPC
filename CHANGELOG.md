@@ -5,6 +5,15 @@ All notable changes to **ExtraNPC** are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Runtime compatibility with Paper 1.21 through 26.x, including 26.1
+- Player-head ArmorStand fallback for releases without the Mannequin entity
+
+### Changed
+- Compile against the oldest supported Paper API and load newer Mannequin APIs reflectively
+
 ## [1.0.1] - 2026-08-25
 
 ### Added

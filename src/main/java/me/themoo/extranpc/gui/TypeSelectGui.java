@@ -35,34 +35,10 @@ public final class TypeSelectGui {
             if (slot >= 45) {
                 break;
             }
-            Material icon = switch (type) {
-                case PLAYER -> Material.PLAYER_HEAD;
-                case VILLAGER -> Material.EMERALD;
-                case COW -> Material.BEEF;
-                case PIG -> Material.PORKCHOP;
-                case SHEEP -> Material.WHITE_WOOL;
-                case CHICKEN -> Material.EGG;
-                case WOLF -> Material.BONE;
-                case CAT -> Material.COD;
-                case HORSE -> Material.SADDLE;
-                case FOX -> Material.SWEET_BERRIES;
-                case RABBIT -> Material.RABBIT_FOOT;
-                case BEE -> Material.HONEYCOMB;
-                case PANDA -> Material.BAMBOO;
-                case IRON_GOLEM -> Material.IRON_BLOCK;
-                case SNOW_GOLEM -> Material.SNOWBALL;
-                case ZOMBIE -> Material.ROTTEN_FLESH;
-                case SKELETON -> Material.BONE;
-                case CREEPER -> Material.GUNPOWDER;
-                case ENDERMAN -> Material.ENDER_PEARL;
-                case BLAZE -> Material.BLAZE_ROD;
-                case WITCH -> Material.GLASS_BOTTLE;
-                case PILLAGER -> Material.CROSSBOW;
-                case ALLAY -> Material.AMETHYST_SHARD;
-                case CAMEL -> Material.CACTUS;
-                case SNIFFER -> Material.TORCHFLOWER_SEEDS;
-                case ARMADILLO -> Material.ARMADILLO_SCUTE;
-            };
+            if (!type.isPlayerLike() && !type.isAvailable()) {
+                continue;
+            }
+            Material icon = iconFor(type);
             ItemStack item = new ItemBuilder(icon)
                     .name((data.getType() == type ? "<green>" : "<white>") + type.name() + "</white>")
                     .loreMini(data.getType() == type ? "<gray>Selected</gray>" : "<yellow>Click to select</yellow>")
@@ -76,5 +52,38 @@ public final class TypeSelectGui {
         }
         inv.setItem(49, new ItemBuilder(Material.ARROW).name("<gray>Back</gray>").build());
         player.openInventory(inv);
+    }
+
+    private static Material iconFor(NpcType type) {
+        String materialName = switch (type) {
+            case PLAYER -> "PLAYER_HEAD";
+            case VILLAGER -> "EMERALD";
+            case COW -> "BEEF";
+            case PIG -> "PORKCHOP";
+            case SHEEP -> "WHITE_WOOL";
+            case CHICKEN -> "EGG";
+            case WOLF -> "BONE";
+            case CAT -> "COD";
+            case HORSE -> "SADDLE";
+            case FOX -> "SWEET_BERRIES";
+            case RABBIT -> "RABBIT_FOOT";
+            case BEE -> "HONEYCOMB";
+            case PANDA -> "BAMBOO";
+            case IRON_GOLEM -> "IRON_BLOCK";
+            case SNOW_GOLEM -> "SNOWBALL";
+            case ZOMBIE -> "ROTTEN_FLESH";
+            case SKELETON -> "BONE";
+            case CREEPER -> "GUNPOWDER";
+            case ENDERMAN -> "ENDER_PEARL";
+            case BLAZE -> "BLAZE_ROD";
+            case WITCH -> "GLASS_BOTTLE";
+            case PILLAGER -> "CROSSBOW";
+            case ALLAY -> "AMETHYST_SHARD";
+            case CAMEL -> "CACTUS";
+            case SNIFFER -> "TORCHFLOWER_SEEDS";
+            case ARMADILLO -> "ARMADILLO_SCUTE";
+        };
+        Material material = Material.matchMaterial(materialName);
+        return material == null ? Material.PAPER : material;
     }
 }

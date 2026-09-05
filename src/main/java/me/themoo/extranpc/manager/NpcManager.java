@@ -12,6 +12,7 @@ import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -255,7 +256,14 @@ public final class NpcManager {
     }
 
     private void spawnMobNpc(NpcData data, Location location) {
-        Entity entity = location.getWorld().spawn(location, data.getType().getEntityType().getEntityClass(), spawned -> {
+        EntityType entityType = data.getType().getEntityType();
+        if (entityType == null || entityType.getEntityClass() == null) {
+            plugin.getLogger().warning("NPC type " + data.getType().name()
+                    + " is not available on this server; skipping '" + data.getId() + "'.");
+            return;
+        }
+
+        Entity entity = location.getWorld().spawn(location, entityType.getEntityClass(), spawned -> {
             spawned.getPersistentDataContainer().set(pluginKey(), PersistentDataType.STRING, data.getId());
             spawned.customName(TextUtil.parse(data.getDisplayName()));
             spawned.setCustomNameVisible(data.isShowName());

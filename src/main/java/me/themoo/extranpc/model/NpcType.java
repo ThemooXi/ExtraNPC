@@ -7,43 +7,52 @@ import java.util.Locale;
 import java.util.Optional;
 
 public enum NpcType {
-    PLAYER(EntityType.PLAYER, true),
-    VILLAGER(EntityType.VILLAGER, false),
-    COW(EntityType.COW, false),
-    PIG(EntityType.PIG, false),
-    SHEEP(EntityType.SHEEP, false),
-    CHICKEN(EntityType.CHICKEN, false),
-    WOLF(EntityType.WOLF, false),
-    CAT(EntityType.CAT, false),
-    HORSE(EntityType.HORSE, false),
-    FOX(EntityType.FOX, false),
-    RABBIT(EntityType.RABBIT, false),
-    BEE(EntityType.BEE, false),
-    PANDA(EntityType.PANDA, false),
-    IRON_GOLEM(EntityType.IRON_GOLEM, false),
-    SNOW_GOLEM(EntityType.SNOW_GOLEM, false),
-    ZOMBIE(EntityType.ZOMBIE, false),
-    SKELETON(EntityType.SKELETON, false),
-    CREEPER(EntityType.CREEPER, false),
-    ENDERMAN(EntityType.ENDERMAN, false),
-    BLAZE(EntityType.BLAZE, false),
-    WITCH(EntityType.WITCH, false),
-    PILLAGER(EntityType.PILLAGER, false),
-    ALLAY(EntityType.ALLAY, false),
-    CAMEL(EntityType.CAMEL, false),
-    SNIFFER(EntityType.SNIFFER, false),
-    ARMADILLO(EntityType.ARMADILLO, false);
+    PLAYER(true),
+    VILLAGER(false),
+    COW(false),
+    PIG(false),
+    SHEEP(false),
+    CHICKEN(false),
+    WOLF(false),
+    CAT(false),
+    HORSE(false),
+    FOX(false),
+    RABBIT(false),
+    BEE(false),
+    PANDA(false),
+    IRON_GOLEM(false),
+    SNOW_GOLEM(false),
+    ZOMBIE(false),
+    SKELETON(false),
+    CREEPER(false),
+    ENDERMAN(false),
+    BLAZE(false),
+    WITCH(false),
+    PILLAGER(false),
+    ALLAY(false),
+    CAMEL(false),
+    SNIFFER(false),
+    ARMADILLO(false);
 
-    private final EntityType entityType;
+    private final String entityTypeName;
     private final boolean playerLike;
 
-    NpcType(EntityType entityType, boolean playerLike) {
-        this.entityType = entityType;
+    NpcType(boolean playerLike) {
+        this.entityTypeName = name();
         this.playerLike = playerLike;
     }
 
     public EntityType getEntityType() {
-        return entityType;
+        try {
+            return EntityType.valueOf(entityTypeName);
+        } catch (IllegalArgumentException ignored) {
+            // New entity types are not present on every supported server version.
+            return null;
+        }
+    }
+
+    public boolean isAvailable() {
+        return getEntityType() != null;
     }
 
     public boolean isPlayerLike() {

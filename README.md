@@ -10,7 +10,7 @@
 
 [![Release](https://img.shields.io/github/v/release/ThemooXi/ExtraNPC?style=for-the-badge&color=00B4D8)](https://github.com/ThemooXi/ExtraNPC/releases/latest)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Paper](https://img.shields.io/badge/Paper-1.21%2B-00A98F?style=for-the-badge)](https://papermc.io)
+[![Paper](https://img.shields.io/badge/Paper-1.19.4--26.2-00A98F?style=for-the-badge)](https://papermc.io)
 [![Discord](https://img.shields.io/badge/Discord-Extra%20Flux-5865F2?style=for-the-badge)](https://discord.com/invite/fJTSA6vnVQ)
 
 </div>
@@ -26,7 +26,7 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 
 ## Features
 
-- **Player NPCs** — real player model via Paper Mannequin
+- **Player NPCs** — native Paper Mannequin where available, skinned compatible fallback on older versions
 - **Mob NPCs** — animals and mobs as frozen NPCs
 - **Skins** — Mojang player name or texture URL
 - **Click actions** — `player:` · `console:` · `message:`
@@ -41,9 +41,14 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 
 | Requirement | Details |
 |:------------|:--------|
-| Server | Paper (or fork) `1.21+` |
-| Java | `21+` |
+| Server | Paper (or compatible fork) `1.19.4` through `26.2` |
+| Java | `17+` bytecode; use the Java version required by your server |
 | Dependencies | None required |
+
+The same jar supports the complete range. On servers that expose the
+Mannequin API (including `26.1` and `26.2`), PLAYER NPCs use the native
+player model. Earlier versions automatically use a skinned ArmorStand
+fallback, while mob NPCs and the remaining features continue to work.
 
 ---
 

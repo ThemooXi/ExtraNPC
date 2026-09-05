@@ -7,43 +7,52 @@ import java.util.Locale;
 import java.util.Optional;
 
 public enum NpcType {
-    PLAYER(EntityType.PLAYER, true),
-    VILLAGER(EntityType.VILLAGER, false),
-    COW(EntityType.COW, false),
-    PIG(EntityType.PIG, false),
-    SHEEP(EntityType.SHEEP, false),
-    CHICKEN(EntityType.CHICKEN, false),
-    WOLF(EntityType.WOLF, false),
-    CAT(EntityType.CAT, false),
-    HORSE(EntityType.HORSE, false),
-    FOX(EntityType.FOX, false),
-    RABBIT(EntityType.RABBIT, false),
-    BEE(EntityType.BEE, false),
-    PANDA(EntityType.PANDA, false),
-    IRON_GOLEM(EntityType.IRON_GOLEM, false),
-    SNOW_GOLEM(EntityType.SNOW_GOLEM, false),
-    ZOMBIE(EntityType.ZOMBIE, false),
-    SKELETON(EntityType.SKELETON, false),
-    CREEPER(EntityType.CREEPER, false),
-    ENDERMAN(EntityType.ENDERMAN, false),
-    BLAZE(EntityType.BLAZE, false),
-    WITCH(EntityType.WITCH, false),
-    PILLAGER(EntityType.PILLAGER, false),
-    ALLAY(EntityType.ALLAY, false),
-    CAMEL(EntityType.CAMEL, false),
-    SNIFFER(EntityType.SNIFFER, false),
-    ARMADILLO(EntityType.ARMADILLO, false);
+    PLAYER("PLAYER", true),
+    VILLAGER("VILLAGER", false),
+    COW("COW", false),
+    PIG("PIG", false),
+    SHEEP("SHEEP", false),
+    CHICKEN("CHICKEN", false),
+    WOLF("WOLF", false),
+    CAT("CAT", false),
+    HORSE("HORSE", false),
+    FOX("FOX", false),
+    RABBIT("RABBIT", false),
+    BEE("BEE", false),
+    PANDA("PANDA", false),
+    IRON_GOLEM("IRON_GOLEM", false),
+    SNOW_GOLEM("SNOW_GOLEM", false),
+    ZOMBIE("ZOMBIE", false),
+    SKELETON("SKELETON", false),
+    CREEPER("CREEPER", false),
+    ENDERMAN("ENDERMAN", false),
+    BLAZE("BLAZE", false),
+    WITCH("WITCH", false),
+    PILLAGER("PILLAGER", false),
+    ALLAY("ALLAY", false),
+    CAMEL("CAMEL", false),
+    SNIFFER("SNIFFER", false),
+    ARMADILLO("ARMADILLO", false);
 
-    private final EntityType entityType;
+    private final String entityTypeName;
     private final boolean playerLike;
 
-    NpcType(EntityType entityType, boolean playerLike) {
-        this.entityType = entityType;
+    NpcType(String entityTypeName, boolean playerLike) {
+        this.entityTypeName = entityTypeName;
         this.playerLike = playerLike;
     }
 
     public EntityType getEntityType() {
-        return entityType;
+        try {
+            Object value = EntityType.class.getField(entityTypeName).get(null);
+            return EntityType.class.isInstance(value) ? EntityType.class.cast(value) : null;
+        } catch (ReflectiveOperationException | LinkageError ignored) {
+            return null;
+        }
+    }
+
+    public boolean isSupported() {
+        return playerLike || getEntityType() != null;
     }
 
     public boolean isPlayerLike() {

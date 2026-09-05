@@ -4,6 +4,7 @@ import me.themoo.extranpc.ExtraNPCPlugin;
 import me.themoo.extranpc.model.NpcData;
 import me.themoo.extranpc.model.NpcType;
 import me.themoo.extranpc.util.ItemBuilder;
+import me.themoo.extranpc.util.ServerCompatibility;
 import me.themoo.extranpc.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -32,6 +33,9 @@ public final class TypeSelectGui {
 
         int slot = 0;
         for (NpcType type : NpcType.values()) {
+            if (!type.isSupported()) {
+                continue;
+            }
             if (slot >= 45) {
                 break;
             }
@@ -60,8 +64,8 @@ public final class TypeSelectGui {
                 case PILLAGER -> Material.CROSSBOW;
                 case ALLAY -> Material.AMETHYST_SHARD;
                 case CAMEL -> Material.CACTUS;
-                case SNIFFER -> Material.TORCHFLOWER_SEEDS;
-                case ARMADILLO -> Material.ARMADILLO_SCUTE;
+                case SNIFFER -> ServerCompatibility.material("TORCHFLOWER_SEEDS", Material.WHEAT_SEEDS);
+                case ARMADILLO -> ServerCompatibility.material("ARMADILLO_SCUTE", Material.SCUTE);
             };
             ItemStack item = new ItemBuilder(icon)
                     .name((data.getType() == type ? "<green>" : "<white>") + type.name() + "</white>")

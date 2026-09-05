@@ -1,57 +1,65 @@
 package me.themoo.extranpc.integration;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
-import io.papermc.paper.datacomponent.item.ResolvableProfile;
 import me.themoo.extranpc.ExtraNPCPlugin;
 import me.themoo.extranpc.model.NpcData;
 import me.themoo.extranpc.model.SkinData;
+import me.themoo.extranpc.util.ServerCompatibility;
 import me.themoo.extranpc.util.TextUtil;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Mannequin;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
- * Player-like NPCs using Paper's Mannequin entity (real player model, not ArmorStand).
+ * Player-like NPCs. Paper's Mannequin is loaded reflectively on versions that
+ * provide it; older supported versions use an ArmorStand with the selected skin.
  */
 public final class NativePlayerNpcProvider implements PlayerNpcProvider {
 
     private final ExtraNPCPlugin plugin;
-    private final boolean available;
+    private final Class<? extends Entity> mannequinClass;
+    private boolean profileWarningLogged;
 
+    @SuppressWarnings("unchecked")
     public NativePlayerNpcProvider(ExtraNPCPlugin plugin) {
         this.plugin = plugin;
-        boolean ok = false;
+        Class<? extends Entity> detected = null;
         try {
-            Class.forName("org.bukkit.entity.Mannequin");
-            ok = true;
-            plugin.getLogger().info("Mannequin player NPCs ready (real player model).");
-        } catch (ClassNotFoundException ex) {
-            plugin.getLogger().severe("Mannequin entity missing — update Paper. PLAYER NPCs will not spawn.");
+            Class<?> type = Class.forName("org.bukkit.entity.Mannequin", false, getClass().getClassLoader());
+            if (Entity.class.isAssignableFrom(type)) {
+                detected = (Class<? extends Entity>) type;
+            }
+        } catch (ClassNotFoundException | LinkageError ignored) {
+            // Expected on Paper versions released before Mannequin.
         }
-        this.available = ok;
+        this.mannequinClass = detected;
+        if (mannequinClass != null) {
+            plugin.getLogger().info("Player NPC backend: native Paper Mannequin.");
+        } else {
+            plugin.getLogger().info("Player NPC backend: compatible ArmorStand fallback (Mannequin is unavailable).");
+        }
     }
 
     @Override
     public boolean isAvailable() {
-        return available;
+        return true;
     }
 
     @Override
     public void spawn(NpcData data) {
         despawn(data);
-
-        if (!available) {
-            plugin.getLogger().severe("Cannot spawn PLAYER NPC '" + data.getId() + "' — Mannequin unavailable.");
-            return;
-        }
 
         Location location = data.getLocation();
         if (location == null || location.getWorld() == null) {
@@ -59,95 +67,108 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
             return;
         }
 
-        Mannequin mannequin = location.getWorld().spawn(location, Mannequin.class, entity -> {
-            configure(entity, data);
-            applyProfile(entity, data);
-        });
+        Entity entity = spawnMannequin(location, data);
+        if (entity == null) {
+            entity = location.getWorld().spawn(location, ArmorStand.class, armorStand -> {
+                configure(armorStand, data);
+                configureFallback(armorStand, data);
+            });
+        }
 
-        data.setEntityUuid(mannequin.getUniqueId());
-        plugin.getLogger().info("Spawned PLAYER NPC '" + data.getId() + "' as Mannequin");
+        data.setEntityUuid(entity.getUniqueId());
     }
 
-    private void configure(Mannequin entity, NpcData data) {
+    private Entity spawnMannequin(Location location, NpcData data) {
+        if (mannequinClass == null) {
+            return null;
+        }
+        try {
+            return location.getWorld().spawn(location, mannequinClass, entity -> {
+                configure(entity, data);
+                invokeOptional(entity, "setImmovable", boolean.class, true);
+                invokeNullableSetter(entity, "setDescription");
+                applyProfile(entity, data);
+            });
+        } catch (RuntimeException | LinkageError ex) {
+            plugin.getLogger().warning("Could not spawn a Mannequin for '" + data.getId()
+                    + "'; using the compatible fallback: " + ex.getMessage());
+            return null;
+        }
+    }
+
+    private void configure(Entity entity, NpcData data) {
         entity.setPersistent(true);
-        entity.setRemoveWhenFarAway(false);
-        entity.setAI(false);
-        entity.setImmovable(true);
         entity.setGravity(data.isGravity());
         entity.setInvulnerable(data.isInvulnerable());
-        entity.setCollidable(data.isCollidable());
         entity.setSilent(data.isSilent());
         entity.setGlowing(data.isGlowing());
         entity.customName(TextUtil.parse(data.getDisplayName()));
         entity.setCustomNameVisible(data.isShowName());
-        // Hide default "NPC" subtitle under the name
-        entity.setDescription(null);
         entity.getPersistentDataContainer().set(
-                new org.bukkit.NamespacedKey(plugin, "npc-id"),
+                new NamespacedKey(plugin, "npc-id"),
                 PersistentDataType.STRING,
                 data.getId()
         );
-        try {
-            var speed = entity.getAttribute(Attribute.MOVEMENT_SPEED);
-            if (speed != null) {
-                speed.setBaseValue(0.0);
+        if (entity instanceof LivingEntity living) {
+            living.setRemoveWhenFarAway(false);
+            living.setAI(false);
+            living.setCollidable(data.isCollidable());
+            Attribute movementSpeed = ServerCompatibility.movementSpeedAttribute();
+            if (movementSpeed != null) {
+                var speed = living.getAttribute(movementSpeed);
+                if (speed != null) {
+                    speed.setBaseValue(0.0);
+                }
             }
-        } catch (Throwable ignored) {
         }
         entity.setRotation(data.getLocation().getYaw(), data.getLocation().getPitch());
     }
 
-    private void applyProfile(Mannequin entity, NpcData data) {
+    private void configureFallback(ArmorStand armorStand, NpcData data) {
+        armorStand.setVisible(false);
+        armorStand.setArms(true);
+        armorStand.setBasePlate(false);
+        armorStand.setMarker(false);
+        EntityEquipment equipment = armorStand.getEquipment();
+        if (equipment != null) {
+            equipment.setHelmet(plugin.getSkinManager().createSkull(data.getSkin(), profileName(data)));
+            equipment.setHelmetDropChance(0.0f);
+        }
+    }
+
+    private void applyProfile(Entity entity, NpcData data) {
+        if (!isMannequin(entity)) {
+            return;
+        }
         SkinData skin = data.getSkin();
         String profileName = profileName(data);
         UUID uuid = UUID.nameUUIDFromBytes(("ExtraNPC:" + data.getId()).getBytes(StandardCharsets.UTF_8));
 
-        ResolvableProfile.Builder builder = ResolvableProfile.resolvableProfile()
-                .name(profileName)
-                .uuid(uuid);
-
-        if (skin != null && skin.hasTexture()) {
-            if (skin.getSignature() != null && !skin.getSignature().isBlank()) {
-                builder.addProperty(new ProfileProperty("textures", skin.getTexture(), skin.getSignature()));
-            } else {
-                builder.addProperty(new ProfileProperty("textures", skin.getTexture()));
+        try {
+            Class<?> profileType = Class.forName("io.papermc.paper.datacomponent.item.ResolvableProfile");
+            Object builder = profileType.getMethod("resolvableProfile").invoke(null);
+            invokeBuilder(builder, "name", profileName);
+            if (skin == null || skin.hasTexture() || skin.getMode() != SkinData.Mode.PLAYER_NAME) {
+                invokeBuilder(builder, "uuid", uuid);
             }
-            entity.setProfile(builder.build());
-            return;
+            if (skin != null && skin.hasTexture()) {
+                ProfileProperty property;
+                if (skin.getSignature() != null && !skin.getSignature().isBlank()) {
+                    property = new ProfileProperty("textures", skin.getTexture(), skin.getSignature());
+                } else {
+                    property = new ProfileProperty("textures", skin.getTexture());
+                }
+                invokeBuilder(builder, "addProperty", property);
+            }
+            Object profile = builder.getClass().getMethod("build").invoke(builder);
+            invokeCompatibleSetter(entity, "setProfile", profile);
+        } catch (ReflectiveOperationException | RuntimeException | LinkageError ex) {
+            if (!profileWarningLogged) {
+                profileWarningLogged = true;
+                plugin.getLogger().warning("The server's Mannequin profile API is incompatible; "
+                        + "player NPCs will use the default skin: " + ex.getMessage());
+            }
         }
-
-        // Resolve by Minecraft username if set
-        if (skin != null && skin.getMode() == SkinData.Mode.PLAYER_NAME
-                && skin.getValue() != null && !skin.getValue().isBlank()) {
-            String name = sanitizeName(skin.getValue());
-            ResolvableProfile dynamic = ResolvableProfile.resolvableProfile().name(name).build();
-            entity.setProfile(dynamic);
-            dynamic.resolve().thenAcceptAsync(updated -> {
-                if (!entity.isValid()) {
-                    return;
-                }
-                ResolvableProfile.Builder resolved = ResolvableProfile.resolvableProfile()
-                        .name(updated.getName() != null ? sanitizeName(updated.getName()) : name)
-                        .uuid(updated.getId() != null ? updated.getId() : uuid);
-                for (ProfileProperty property : updated.getProperties()) {
-                    resolved.addProperty(property);
-                }
-                entity.setProfile(resolved.build());
-                // Persist textures for next spawn
-                for (ProfileProperty property : updated.getProperties()) {
-                    if ("textures".equalsIgnoreCase(property.getName())) {
-                        skin.setTexture(property.getValue());
-                        if (property.getSignature() != null) {
-                            skin.setSignature(property.getSignature());
-                        }
-                        break;
-                    }
-                }
-            }, runnable -> plugin.getServer().getScheduler().runTask(plugin, runnable));
-            return;
-        }
-
-        entity.setProfile(builder.build());
     }
 
     private String profileName(NpcData data) {
@@ -200,8 +221,10 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
     @Override
     public void applySkin(NpcData data) {
         Entity entity = getEntity(data);
-        if (entity instanceof Mannequin mannequin) {
-            applyProfile(mannequin, data);
+        if (isMannequin(entity)) {
+            applyProfile(entity, data);
+        } else if (entity instanceof ArmorStand armorStand) {
+            configureFallback(armorStand, data);
         } else {
             spawn(data);
         }
@@ -210,19 +233,17 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
     @Override
     public void applySettings(NpcData data) {
         Entity entity = getEntity(data);
-        if (!(entity instanceof Mannequin mannequin)) {
+        if (entity == null) {
             spawn(data);
             return;
         }
-        mannequin.customName(TextUtil.parse(data.getDisplayName()));
-        mannequin.setCustomNameVisible(data.isShowName());
-        mannequin.setGlowing(data.isGlowing());
-        mannequin.setGravity(data.isGravity());
-        mannequin.setSilent(data.isSilent());
-        mannequin.setInvulnerable(data.isInvulnerable());
-        mannequin.setCollidable(data.isCollidable());
-        mannequin.setImmovable(true);
-        mannequin.setDescription(null);
+        configure(entity, data);
+        if (isMannequin(entity)) {
+            invokeOptional(entity, "setImmovable", boolean.class, true);
+            invokeNullableSetter(entity, "setDescription");
+        } else if (entity instanceof ArmorStand armorStand) {
+            configureFallback(armorStand, data);
+        }
     }
 
     @Override
@@ -257,5 +278,56 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
         Vector dir = nearest.getEyeLocation().toVector().subtract(base.clone().add(0, 1.6, 0).toVector());
         Location look = base.clone().setDirection(dir);
         entity.setRotation(look.getYaw(), look.getPitch());
+    }
+
+    private boolean isMannequin(Entity entity) {
+        return entity != null && mannequinClass != null && mannequinClass.isInstance(entity);
+    }
+
+    private static void invokeBuilder(Object target, String methodName, Object value)
+            throws ReflectiveOperationException {
+        for (Method method : target.getClass().getMethods()) {
+            if (method.getName().equals(methodName)
+                    && method.getParameterCount() == 1
+                    && method.getParameterTypes()[0].isAssignableFrom(value.getClass())) {
+                method.invoke(target, value);
+                return;
+            }
+        }
+        throw new NoSuchMethodException(methodName);
+    }
+
+    private static void invokeCompatibleSetter(Object target, String methodName, Object value)
+            throws ReflectiveOperationException {
+        for (Method method : target.getClass().getMethods()) {
+            if (method.getName().equals(methodName)
+                    && method.getParameterCount() == 1
+                    && method.getParameterTypes()[0].isAssignableFrom(value.getClass())) {
+                method.invoke(target, value);
+                return;
+            }
+        }
+        throw new NoSuchMethodException(methodName);
+    }
+
+    private static void invokeOptional(Object target, String methodName, Class<?> parameterType, Object value) {
+        try {
+            target.getClass().getMethod(methodName, parameterType).invoke(target, value);
+        } catch (ReflectiveOperationException ignored) {
+            // Capability is optional across supported server versions.
+        }
+    }
+
+    private static void invokeNullableSetter(Object target, String methodName) {
+        for (Method method : target.getClass().getMethods()) {
+            if (method.getName().equals(methodName) && method.getParameterCount() == 1) {
+                try {
+                    method.invoke(target, new Object[]{null});
+                } catch (ReflectiveOperationException ignored) {
+                    // Capability is optional across supported server versions.
+                }
+                return;
+            }
+        }
     }
 }

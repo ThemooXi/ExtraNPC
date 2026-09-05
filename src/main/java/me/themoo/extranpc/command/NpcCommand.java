@@ -71,7 +71,7 @@ public final class NpcCommand implements CommandExecutor {
                 NpcType type = NpcType.PLAYER;
                 if (args.length >= 3) {
                     type = NpcType.fromString(args[2]).orElse(null);
-                    if (type == null) {
+                    if (type == null || !type.isSupported()) {
                         plugin.getMessages().send(player, "invalid-type");
                         return true;
                     }

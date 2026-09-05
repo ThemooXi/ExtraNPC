@@ -5,6 +5,7 @@ import me.themoo.extranpc.integration.PlayerNpcProvider;
 import me.themoo.extranpc.model.NpcData;
 import me.themoo.extranpc.model.NpcType;
 import me.themoo.extranpc.model.ShopTrade;
+import me.themoo.extranpc.util.ServerCompatibility;
 import me.themoo.extranpc.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,6 +13,7 @@ import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -255,7 +257,14 @@ public final class NpcManager {
     }
 
     private void spawnMobNpc(NpcData data, Location location) {
-        Entity entity = location.getWorld().spawn(location, data.getType().getEntityType().getEntityClass(), spawned -> {
+        EntityType entityType = data.getType().getEntityType();
+        Class<? extends Entity> entityClass = entityType == null ? null : entityType.getEntityClass();
+        if (entityClass == null) {
+            plugin.getLogger().warning("NPC type " + data.getType().name()
+                    + " is unavailable on this Minecraft version; '" + data.getId() + "' was not spawned.");
+            return;
+        }
+        Entity entity = location.getWorld().spawn(location, entityClass, spawned -> {
             spawned.getPersistentDataContainer().set(pluginKey(), PersistentDataType.STRING, data.getId());
             spawned.customName(TextUtil.parse(data.getDisplayName()));
             spawned.setCustomNameVisible(data.isShowName());
@@ -276,9 +285,12 @@ public final class NpcManager {
                     living.getEquipment().setBootsDropChance(0f);
                 }
                 try {
-                    var attr = living.getAttribute(Attribute.MOVEMENT_SPEED);
-                    if (attr != null) {
-                        attr.setBaseValue(0);
+                    Attribute movementSpeed = ServerCompatibility.movementSpeedAttribute();
+                    if (movementSpeed != null) {
+                        var attr = living.getAttribute(movementSpeed);
+                        if (attr != null) {
+                            attr.setBaseValue(0);
+                        }
                     }
                 } catch (Throwable ignored) {
                 }

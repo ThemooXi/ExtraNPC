@@ -5,6 +5,18 @@ All notable changes to **ExtraNPC** are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- One-jar compatibility for Paper 1.19.4 through 26.2, including 26.1
+- Automatic skinned ArmorStand fallback for PLAYER NPCs on servers without the Mannequin API
+
+### Changed
+- Load Mannequin and version-specific entity/material constants safely at runtime
+- Emit Java 17-compatible bytecode while retaining modern-server support
+
+---
+
 ## [1.0.1] - 2026-08-25
 
 ### Added

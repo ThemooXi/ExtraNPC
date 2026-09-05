@@ -45,7 +45,11 @@ public final class NpcTabCompleter implements TabCompleter {
             }
         }
         if (args.length == 3 && args[0].equalsIgnoreCase("create")) {
-            return filter(Arrays.stream(NpcType.values()).map(Enum::name).map(String::toLowerCase).collect(Collectors.toList()), args[2]);
+            return filter(Arrays.stream(NpcType.values())
+                    .filter(NpcType::isSupported)
+                    .map(Enum::name)
+                    .map(String::toLowerCase)
+                    .collect(Collectors.toList()), args[2]);
         }
         return List.of();
     }

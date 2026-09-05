@@ -14,7 +14,8 @@
 ## ✨ Features
 
 **🧍 Player NPCs**
-- Real player model (Paper Mannequin)
+- Native Paper Mannequin where available
+- Compatible skinned fallback on older versions
 - Skins by name or texture URL
 - Look-at-player · glow · holograms
 
@@ -58,7 +59,7 @@
 
 ## ⚙️ Requirements
 
-> 🖥️ Paper **1.21+** · ☕ Java **21+** · 💰 **Free** · 📜 MIT
+> 🖥️ Paper **1.19.4–26.2** · ☕ Java **17+ bytecode** · 💰 **Free** · 📜 MIT
 > ✅ No required dependencies
 
 ---

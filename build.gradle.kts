@@ -19,8 +19,9 @@ repositories {
 }
 
 dependencies {
-    // Paper 26.2 / 1.21.11+ — Mannequin player NPCs
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    // Compile against the oldest supported API. Newer features are loaded
+    // reflectively so this one jar also runs on 1.20.x, 1.21.x and 26.x.
+    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.6")
 }
 
@@ -38,4 +39,5 @@ tasks.jar {
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
+    options.release.set(17)
 }

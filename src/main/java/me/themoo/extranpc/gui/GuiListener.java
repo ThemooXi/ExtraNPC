@@ -93,6 +93,10 @@ public final class GuiListener implements Listener {
                     return;
                 }
                 NpcType.fromString(typeName).ifPresent(type -> {
+                    if (!type.isSupported()) {
+                        plugin.getMessages().send(player, "invalid-type");
+                        return;
+                    }
                     if (type.isPlayerLike() && !plugin.getNpcManager().canCreatePlayerNpc()) {
                         plugin.getMessages().send(player, "npc-engine-error");
                         return;

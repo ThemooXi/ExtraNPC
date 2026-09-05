@@ -37,7 +37,7 @@ GUI · Native Player NPCs · Trade Shops · PlaceholderAPI
 
 [URL='https://github.com/ThemooXi/ExtraNPC/releases/latest'][IMG]https://img.shields.io/github/v/release/ThemooXi/ExtraNPC?style=for-the-badge&color=00B4D8[/IMG][/URL]
 [URL='https://github.com/ThemooXi/ExtraNPC/blob/main/LICENSE'][IMG]https://img.shields.io/badge/License-MIT-green?style=for-the-badge[/IMG][/URL]
-[URL='https://papermc.io'][IMG]https://img.shields.io/badge/Paper-1.21%2B-00A98F?style=for-the-badge[/IMG][/URL]
+[URL='https://papermc.io'][IMG]https://img.shields.io/badge/Paper-1.19.4--26.2-00A98F?style=for-the-badge[/IMG][/URL]
 [URL='https://discord.com/invite/fJTSA6vnVQ'][IMG]https://img.shields.io/badge/Discord-Extra%20Flux-5865F2?style=for-the-badge[/IMG][/URL]
 [/CENTER]
 
@@ -49,7 +49,7 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 [CENTER][S]                                                            [/S][/CENTER]
 [B][SIZE=5]Features[/SIZE][/B]
 [LIST]
-[*][B]Player NPCs[/B] — real player model via Paper Mannequin
+[*][B]Player NPCs[/B] — native Paper Mannequin where available, compatible skinned fallback on older versions
 [*][B]Mob NPCs[/B] — animals and mobs as frozen NPCs
 [*][B]Skins[/B] — Mojang player name or texture URL
 [*][B]Click actions[/B] — player: · console: · message:
@@ -62,8 +62,8 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 [CENTER][S]                                                            [/S][/CENTER]
 [B][SIZE=5]Requirements[/SIZE][/B]
 [LIST]
-[*]Server: Paper (or fork) 1.21+
-[*]Java: 21+
+[*]Server: Paper (or compatible fork) 1.19.4 through 26.2
+[*]Java: 17+ bytecode; use the Java version required by your server
 [*]Dependencies: None required
 [/LIST]
 

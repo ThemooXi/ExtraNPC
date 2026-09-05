@@ -28,10 +28,15 @@ jobs:
       - name: Build
         run: gradle build --no-daemon
 
+      - name: Extract release notes from CHANGELOG
+        run: |
+          chmod +x .github/scripts/extract-changelog.sh
+          .github/scripts/extract-changelog.sh "${GITHUB_REF_NAME#v}"
+
       - name: Upload release asset
         uses: softprops/action-gh-release@v2
         with:
           files: build/libs/ExtraNPC-*.jar
-          generate_release_notes: true
+          body_path: release-notes.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

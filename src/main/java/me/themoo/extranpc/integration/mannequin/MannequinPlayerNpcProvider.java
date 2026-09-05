@@ -1,8 +1,9 @@
-package me.themoo.extranpc.integration;
+package me.themoo.extranpc.integration.mannequin;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
 import io.papermc.paper.datacomponent.item.ResolvableProfile;
 import me.themoo.extranpc.ExtraNPCPlugin;
+import me.themoo.extranpc.integration.PlayerNpcProvider;
 import me.themoo.extranpc.model.NpcData;
 import me.themoo.extranpc.model.SkinData;
 import me.themoo.extranpc.util.TextUtil;
@@ -19,39 +20,30 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
- * Player-like NPCs using Paper's Mannequin entity (real player model, not ArmorStand).
+ * Player-like NPCs using Paper's Mannequin entity (real player model).
+ * Loaded reflectively only when {@code org.bukkit.entity.Mannequin} exists.
  */
-public final class NativePlayerNpcProvider implements PlayerNpcProvider {
+public final class MannequinPlayerNpcProvider implements PlayerNpcProvider {
 
     private final ExtraNPCPlugin plugin;
-    private final boolean available;
 
-    public NativePlayerNpcProvider(ExtraNPCPlugin plugin) {
+    public MannequinPlayerNpcProvider(ExtraNPCPlugin plugin) {
         this.plugin = plugin;
-        boolean ok = false;
-        try {
-            Class.forName("org.bukkit.entity.Mannequin");
-            ok = true;
-            plugin.getLogger().info("Mannequin player NPCs ready (real player model).");
-        } catch (ClassNotFoundException ex) {
-            plugin.getLogger().severe("Mannequin entity missing — update Paper. PLAYER NPCs will not spawn.");
-        }
-        this.available = ok;
     }
 
     @Override
     public boolean isAvailable() {
-        return available;
+        return true;
+    }
+
+    @Override
+    public String getEngineName() {
+        return "Mannequin";
     }
 
     @Override
     public void spawn(NpcData data) {
         despawn(data);
-
-        if (!available) {
-            plugin.getLogger().severe("Cannot spawn PLAYER NPC '" + data.getId() + "' — Mannequin unavailable.");
-            return;
-        }
 
         Location location = data.getLocation();
         if (location == null || location.getWorld() == null) {
@@ -80,7 +72,6 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
         entity.setGlowing(data.isGlowing());
         entity.customName(TextUtil.parse(data.getDisplayName()));
         entity.setCustomNameVisible(data.isShowName());
-        // Hide default "NPC" subtitle under the name
         entity.setDescription(null);
         entity.getPersistentDataContainer().set(
                 new org.bukkit.NamespacedKey(plugin, "npc-id"),
@@ -116,7 +107,6 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
             return;
         }
 
-        // Resolve by Minecraft username if set
         if (skin != null && skin.getMode() == SkinData.Mode.PLAYER_NAME
                 && skin.getValue() != null && !skin.getValue().isBlank()) {
             String name = sanitizeName(skin.getValue());
@@ -133,7 +123,6 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
                     resolved.addProperty(property);
                 }
                 entity.setProfile(resolved.build());
-                // Persist textures for next spawn
                 for (ProfileProperty property : updated.getProperties()) {
                     if ("textures".equalsIgnoreCase(property.getName())) {
                         skin.setTexture(property.getValue());
@@ -233,6 +222,7 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
         return plugin.getServer().getEntity(data.getEntityUuid());
     }
 
+    @Override
     public void tickLook(NpcData data) {
         if (!data.isLookAtPlayers()) {
             return;

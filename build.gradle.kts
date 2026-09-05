@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "me.themoo"
-version = "1.0.1"
+version = "1.0.2"
 
 java {
     toolchain {
@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    // Paper 26.2 / 1.21.11+ — Mannequin player NPCs
+    // Mannequin API (1.21.9+ / Paper 26.1+). Java 21 bytecode runs on Paper 26.1 (Java 25).
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.6")
 }

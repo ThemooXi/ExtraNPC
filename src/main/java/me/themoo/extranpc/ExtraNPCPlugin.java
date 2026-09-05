@@ -3,9 +3,9 @@ package me.themoo.extranpc;
 import me.themoo.extranpc.command.NpcCommand;
 import me.themoo.extranpc.command.NpcTabCompleter;
 import me.themoo.extranpc.gui.GuiListener;
-import me.themoo.extranpc.integration.NativePlayerNpcProvider;
 import me.themoo.extranpc.integration.PlaceholderHook;
 import me.themoo.extranpc.integration.PlayerNpcProvider;
+import me.themoo.extranpc.integration.PlayerNpcProviderFactory;
 import me.themoo.extranpc.listener.ChatInputListener;
 import me.themoo.extranpc.listener.NpcListener;
 import me.themoo.extranpc.listener.SupportReminderListener;
@@ -46,8 +46,8 @@ public final class ExtraNPCPlugin extends JavaPlugin {
         this.placeholderHook.hook();
         ConsoleBanner.printHook("PlaceholderAPI", placeholderHook.isEnabled());
 
-        this.playerNpcProvider = new NativePlayerNpcProvider(this);
-        ConsoleBanner.printHook("NativePlayerNPC", playerNpcProvider.isAvailable());
+        this.playerNpcProvider = PlayerNpcProviderFactory.create(this);
+        ConsoleBanner.printHook("PlayerNPC (" + playerNpcProvider.getEngineName() + ")", playerNpcProvider.isAvailable());
 
         this.npcManager = new NpcManager(this);
 
@@ -98,7 +98,7 @@ public final class ExtraNPCPlugin extends JavaPlugin {
         messages.reload();
         npcManager.saveAll();
         npcManager.despawnAll();
-        playerNpcProvider = new NativePlayerNpcProvider(this);
+        playerNpcProvider = PlayerNpcProviderFactory.create(this);
         npcManager.loadAll();
     }
 

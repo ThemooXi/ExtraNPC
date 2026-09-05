@@ -414,8 +414,9 @@ public final class NpcManager {
                 continue;
             }
             if (data.getType().isPlayerLike()) {
-                if (players() instanceof me.themoo.extranpc.integration.NativePlayerNpcProvider nativeProvider) {
-                    nativeProvider.tickLook(data);
+                PlayerNpcProvider provider = players();
+                if (provider != null) {
+                    provider.tickLook(data);
                 }
                 continue;
             }

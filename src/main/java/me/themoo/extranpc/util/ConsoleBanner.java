@@ -2,6 +2,7 @@ package me.themoo.extranpc.util;
 
 import me.themoo.extranpc.ExtraNPCPlugin;
 
+import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
@@ -29,7 +30,7 @@ public final class ConsoleBanner {
         log.info(line);
         log.info("  Status      : ENABLED");
         log.info("  NPCs        : " + npcCount + " loaded");
-        log.info("  Player NPCs : " + (nativePlayers ? "NATIVE (standalone)" : "UNAVAILABLE"));
+        log.info("  Player NPCs : " + (nativePlayers ? playerEngineLabel(plugin) : "UNAVAILABLE"));
         log.info("  Optional    : PlaceholderAPI (soft)");
         log.info(line);
         log.info("  Author      : ThemoO");
@@ -61,5 +62,13 @@ public final class ConsoleBanner {
     private static Logger pluginLogger() {
         ExtraNPCPlugin plugin = ExtraNPCPlugin.getInstance();
         return plugin != null ? plugin.getLogger() : Logger.getLogger("ExtraNPC");
+    }
+
+    private static String playerEngineLabel(ExtraNPCPlugin plugin) {
+        var provider = plugin.getPlayerNpcProvider();
+        if (provider == null) {
+            return "UNAVAILABLE";
+        }
+        return provider.getEngineName().toUpperCase(Locale.ROOT) + " (standalone)";
     }
 }

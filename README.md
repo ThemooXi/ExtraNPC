@@ -41,7 +41,7 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 
 | Requirement | Details |
 |:------------|:--------|
-| Server | Paper (or fork) `1.21+` |
+| Server | Paper (or fork) `1.21+` — player model NPCs on `1.21.9+` / `26.1+` (Mannequin) |
 | Java | `21+` |
 | Dependencies | None required |
 

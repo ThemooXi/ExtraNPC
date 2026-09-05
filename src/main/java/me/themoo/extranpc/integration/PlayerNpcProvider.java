@@ -11,6 +11,9 @@ public interface PlayerNpcProvider {
 
     boolean isAvailable();
 
+    /** Human-readable backend name for logging (e.g. Mannequin, ArmorStand). */
+    String getEngineName();
+
     void spawn(NpcData data);
 
     void despawn(NpcData data);
@@ -22,4 +25,6 @@ public interface PlayerNpcProvider {
     void applySettings(NpcData data);
 
     Entity getEntity(NpcData data);
+
+    void tickLook(NpcData data);
 }

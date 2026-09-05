@@ -3,7 +3,7 @@ version: '${version}'
 main: me.themoo.extranpc.ExtraNPCPlugin
 api-version: '1.21'
 authors: [ ThemoO ]
-description: Standalone advanced NPC framework with real player-model (Mannequin) NPCs, GUI, shops and optional PlaceholderAPI.
+description: Standalone advanced NPC framework with player-model NPCs (Mannequin on Paper 26.1+), GUI, shops and optional PlaceholderAPI.
 website: https://discord.com/invite/fJTSA6vnVQ
 softdepend: [ PlaceholderAPI ]
 commands:

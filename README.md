@@ -49,7 +49,7 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 
 ## Installation
 
-1. Download **[ExtraNPC-1.0.3.jar](https://github.com/ThemooXi/ExtraNPC/releases/latest)**
+1. Download **[ExtraNPC-1.0.2.jar](https://github.com/ThemooXi/ExtraNPC/releases/latest)**
 2. Put the jar in your `plugins` folder
 3. Restart the server
 4. Run `/extranpc gui`
@@ -123,7 +123,7 @@ plugins/ExtraNpc/
 gradlew.bat build
 ```
 
-Output: `build/libs/ExtraNPC-1.0.3.jar`
+Output: `build/libs/ExtraNPC-1.0.2.jar`
 
 ---
 
@@ -163,6 +163,6 @@ Released under the [MIT License](LICENSE)
 
 <br>
 
-<sub>- ExtraNPC · v1.0.3 · ThemoO · @m_1z.4</sub>
+<sub>- ExtraNPC · v1.0.2 · ThemoO · @m_1z.4</sub>
 
 </div>

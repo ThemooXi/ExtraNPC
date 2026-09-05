@@ -11,7 +11,7 @@ public interface PlayerNpcProvider {
 
     boolean isAvailable();
 
-    /** Human-readable backend name for logging (e.g. Mannequin, ArmorStand). */
+    /** Human-readable backend name for logging (e.g. Mannequin). */
     String getEngineName();
 
     void spawn(NpcData data);

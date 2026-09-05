@@ -26,7 +26,7 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 
 ## Features
 
-- **Player NPCs** — real player model via Paper Mannequin
+- **Player NPCs** — real player model via Paper Mannequin (1.21.9+ / 26.1+)
 - **Mob NPCs** — animals and mobs as frozen NPCs
 - **Skins** — Mojang player name or texture URL
 - **Click actions** — `player:` · `console:` · `message:`
@@ -41,7 +41,7 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 
 | Requirement | Details |
 |:------------|:--------|
-| Server | Paper (or fork) `1.21+` — player model NPCs on `1.21.9+` / `26.1+` (Mannequin) |
+| Server | Paper (or fork) `1.21+` — player NPCs need `1.21.9+` / `26.1+` (Mannequin) |
 | Java | `21+` |
 | Dependencies | None required |
 
@@ -49,7 +49,7 @@ Build player-model NPCs, animals, and mobs with a full in-game GUI — skins, cl
 
 ## Installation
 
-1. Download **[ExtraNPC-1.0.1.jar](https://github.com/ThemooXi/ExtraNPC/releases/latest)**
+1. Download **[ExtraNPC-1.0.3.jar](https://github.com/ThemooXi/ExtraNPC/releases/latest)**
 2. Put the jar in your `plugins` folder
 3. Restart the server
 4. Run `/extranpc gui`
@@ -123,7 +123,7 @@ plugins/ExtraNpc/
 gradlew.bat build
 ```
 
-Output: `build/libs/ExtraNPC-1.0.1.jar`
+Output: `build/libs/ExtraNPC-1.0.3.jar`
 
 ---
 
@@ -163,6 +163,6 @@ Released under the [MIT License](LICENSE)
 
 <br>
 
-<sub>- ExtraNPC · v1.0.1 · ThemoO · @m_1z.4</sub>
+<sub>- ExtraNPC · v1.0.3 · ThemoO · @m_1z.4</sub>
 
 </div>

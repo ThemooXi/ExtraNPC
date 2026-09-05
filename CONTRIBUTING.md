@@ -11,7 +11,7 @@ Thanks for your interest in contributing.
 ## Development
 
 - **Java:** 21+
-- **Server API:** Paper 1.21+
+- **Server API:** Paper 1.21+ (player NPCs: 1.21.9+ / 26.1+ with Mannequin)
 - **Build:** `./gradlew build` (Windows: `gradlew.bat build`)
 - Output JAR: `build/libs/ExtraNPC-<version>.jar`
 

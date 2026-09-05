@@ -5,15 +5,26 @@ All notable changes to **ExtraNPC** are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2026-09-05
+
+### Changed
+- Player NPCs always use Mannequin (real player model) on Paper 1.21.9+ / 26.1+ — removed ArmorStand fallback
+- Clearer error message when Mannequin is unavailable; mob NPCs still work on older Paper 1.21.x
+
+### Fixed
+- Plugin loads safely on all Paper 1.21+ servers via reflective Mannequin provider loading
+
+---
+
 ## [1.0.2] - 2026-09-05
 
 ### Added
-- Multi-version player NPC support: Mannequin on Paper 1.21.9+ / 26.1+, ArmorStand fallback on older Paper 1.21.x
+- Multi-version player NPC support: Mannequin on Paper 1.21.9+ / 26.1+
 - `PlayerNpcProviderFactory` loads Mannequin backend reflectively so the plugin enables on all Paper 1.21+ servers
 
 ### Changed
 - Player NPC engine is selected automatically at runtime based on server capabilities
-- Console banner shows active player NPC engine (Mannequin or ArmorStand)
+- Console banner shows active player NPC engine
 
 ---
 

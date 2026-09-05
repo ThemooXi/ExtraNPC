@@ -40,7 +40,7 @@ shop-disabled: "<red>Shop disabled.</red> <gray>Right-click will not open the sh
 cooldown: "<red>Wait</red> <yellow>{seconds}s</yellow>"
 no-interact-perm: "<red>You can't use this NPC.</red>"
 citizens-required: "<red>Player NPC engine error.</red>"
-npc-engine-error: "<red>Player NPC engine failed to start.</red> <gray>Check console.</gray>"
+npc-engine-error: "<red>Player NPCs require Paper 1.21.9+ or 26.1+ (Mannequin).</red> <gray>Update your server.</gray>"
 
 # ── About / Credits ───────────────────────
 about:

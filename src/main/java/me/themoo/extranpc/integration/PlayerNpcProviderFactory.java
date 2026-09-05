@@ -1,14 +1,13 @@
 package me.themoo.extranpc.integration;
 
 import me.themoo.extranpc.ExtraNPCPlugin;
-import me.themoo.extranpc.integration.fallback.ArmorStandPlayerNpcProvider;
 
 import java.lang.reflect.Constructor;
 import java.util.logging.Level;
 
 /**
- * Selects the best player NPC backend for the running server version.
- * Mannequin (Paper 1.21.9+ / 26.1+) is preferred; ArmorStand is used as fallback.
+ * Loads Mannequin player NPC backend reflectively on supported Paper versions.
+ * Player NPCs always use the real player model (Mannequin) — never ArmorStand.
  */
 public final class PlayerNpcProviderFactory {
 
@@ -29,13 +28,14 @@ public final class PlayerNpcProviderFactory {
                     return provider;
                 }
             } catch (Throwable ex) {
-                plugin.getLogger().log(Level.WARNING,
-                        "Mannequin provider unavailable, falling back to ArmorStand.", ex);
+                plugin.getLogger().log(Level.SEVERE,
+                        "Mannequin provider failed to load.", ex);
             }
         } else {
-            plugin.getLogger().info("Mannequin not found on this server — using ArmorStand fallback for player NPCs.");
+            plugin.getLogger().warning(
+                    "Mannequin not found — player NPCs require Paper 1.21.9+ or 26.1+. Mob NPCs still work.");
         }
-        return new ArmorStandPlayerNpcProvider(plugin);
+        return new UnavailablePlayerNpcProvider(plugin);
     }
 
     private static boolean hasMannequin() {

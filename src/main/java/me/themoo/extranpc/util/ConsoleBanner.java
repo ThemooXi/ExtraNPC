@@ -69,6 +69,8 @@ public final class ConsoleBanner {
         if (provider == null) {
             return "UNAVAILABLE";
         }
-        return provider.getEngineName().toUpperCase(Locale.ROOT) + " (standalone)";
+        return provider.getEngineName().equalsIgnoreCase("Mannequin")
+                ? "MANNEQUIN (real player model)"
+                : provider.getEngineName().toUpperCase(Locale.ROOT);
     }
 }

@@ -1,6 +1,9 @@
 package me.themoo.extranpc.manager;
 
 import me.themoo.extranpc.ExtraNPCPlugin;
+import me.themoo.extranpc.compat.BukkitCompat;
+import me.themoo.extranpc.compat.LookAtHelper;
+import me.themoo.extranpc.compat.ServerCompat;
 import me.themoo.extranpc.integration.PlayerNpcProvider;
 import me.themoo.extranpc.model.NpcData;
 import me.themoo.extranpc.model.NpcType;
@@ -9,9 +12,10 @@ import me.themoo.extranpc.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Ageable;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -21,7 +25,6 @@ import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -255,7 +258,12 @@ public final class NpcManager {
     }
 
     private void spawnMobNpc(NpcData data, Location location) {
-        Entity entity = location.getWorld().spawn(location, data.getType().getEntityType().getEntityClass(), spawned -> {
+        EntityType entityType = data.getType().getEntityType();
+        if (entityType == null || entityType.getEntityClass() == null) {
+            plugin.getLogger().warning("NPC type " + data.getType().name() + " is not available on this server.");
+            return;
+        }
+        Entity entity = location.getWorld().spawn(location, entityType.getEntityClass(), spawned -> {
             spawned.getPersistentDataContainer().set(pluginKey(), PersistentDataType.STRING, data.getId());
             spawned.customName(TextUtil.parse(data.getDisplayName()));
             spawned.setCustomNameVisible(data.isShowName());
@@ -275,13 +283,7 @@ public final class NpcManager {
                     living.getEquipment().setLeggingsDropChance(0f);
                     living.getEquipment().setBootsDropChance(0f);
                 }
-                try {
-                    var attr = living.getAttribute(Attribute.MOVEMENT_SPEED);
-                    if (attr != null) {
-                        attr.setBaseValue(0);
-                    }
-                } catch (Throwable ignored) {
-                }
+                BukkitCompat.freezeMovement(living);
             }
 
             if (spawned instanceof Ageable ageable) {
@@ -314,20 +316,43 @@ public final class NpcManager {
         double offset = 0.35 * data.getHologramLines().size() + 2.1;
         for (String line : data.getHologramLines()) {
             Location holoLoc = base.clone().add(0, offset, 0);
-            TextDisplay display = base.getWorld().spawn(holoLoc, TextDisplay.class, text -> {
-                text.text(TextUtil.parse(line));
-                text.setBillboard(org.bukkit.entity.Display.Billboard.CENTER);
-                text.setSeeThrough(true);
-                text.setShadowed(true);
-                text.setDefaultBackground(false);
-                text.setPersistent(true);
-                text.setGravity(false);
-                text.getPersistentDataContainer().set(pluginKey(), PersistentDataType.STRING, "holo:" + data.getId());
-            });
-            ids.add(display.getUniqueId());
+            Entity hologram = spawnHologramLine(holoLoc, line, data.getId());
+            if (hologram != null) {
+                ids.add(hologram.getUniqueId());
+            }
             offset -= 0.35;
         }
         holograms.put(data.getId().toLowerCase(Locale.ROOT), ids);
+    }
+
+    private Entity spawnHologramLine(Location location, String line, String npcId) {
+        if (ServerCompat.hasTextDisplay()) {
+            try {
+                return location.getWorld().spawn(location, TextDisplay.class, text -> {
+                    text.text(TextUtil.parse(line));
+                    text.setBillboard(org.bukkit.entity.Display.Billboard.CENTER);
+                    text.setSeeThrough(true);
+                    text.setShadowed(true);
+                    text.setDefaultBackground(false);
+                    text.setPersistent(true);
+                    text.setGravity(false);
+                    text.getPersistentDataContainer().set(pluginKey(), PersistentDataType.STRING, "holo:" + npcId);
+                });
+            } catch (Throwable ignored) {
+            }
+        }
+        return location.getWorld().spawn(location, ArmorStand.class, stand -> {
+            stand.customName(TextUtil.parse(line));
+            stand.setCustomNameVisible(true);
+            stand.setInvisible(true);
+            stand.setMarker(true);
+            stand.setGravity(false);
+            stand.setInvulnerable(true);
+            stand.setPersistent(true);
+            stand.setBasePlate(false);
+            stand.setArms(false);
+            stand.getPersistentDataContainer().set(pluginKey(), PersistentDataType.STRING, "holo:" + npcId);
+        });
     }
 
     private void removeHolograms(String id) {
@@ -414,30 +439,13 @@ public final class NpcManager {
                 continue;
             }
             if (data.getType().isPlayerLike()) {
-                if (players() instanceof me.themoo.extranpc.integration.NativePlayerNpcProvider nativeProvider) {
-                    nativeProvider.tickLook(data);
+                PlayerNpcProvider provider = players();
+                if (provider != null) {
+                    provider.tickLook(data);
                 }
                 continue;
             }
-            Entity entity = getEntity(data);
-            if (!(entity instanceof LivingEntity living)) {
-                continue;
-            }
-            Player nearest = null;
-            double best = data.getLookRange();
-            for (Player player : living.getWorld().getPlayers()) {
-                double dist = player.getLocation().distance(living.getLocation());
-                if (dist <= best) {
-                    best = dist;
-                    nearest = player;
-                }
-            }
-            if (nearest != null) {
-                Location eye = living.getLocation();
-                Vector direction = nearest.getEyeLocation().toVector().subtract(eye.toVector());
-                eye.setDirection(direction);
-                living.setRotation(eye.getYaw(), eye.getPitch());
-            }
+            LookAtHelper.tick(data, getEntity(data), 1.5);
         }
     }
 
@@ -450,10 +458,13 @@ public final class NpcManager {
             if (entity == null) {
                 continue;
             }
+            Particle particle = BukkitCompat.particle(data.getParticle());
+            if (particle == null) {
+                continue;
+            }
             try {
-                Particle particle = Particle.valueOf(data.getParticle().toUpperCase(Locale.ROOT));
                 entity.getWorld().spawnParticle(particle, entity.getLocation().add(0, 1.2, 0), 4, 0.25, 0.35, 0.25, 0.01);
-            } catch (IllegalArgumentException ignored) {
+            } catch (Throwable ignored) {
             }
         }
     }

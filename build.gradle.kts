@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "me.themoo"
-version = "1.0.1"
+version = "1.1.0"
 
 java {
     toolchain {
@@ -19,9 +19,14 @@ repositories {
 }
 
 dependencies {
-    // Paper 26.2 / 1.21.11+ — Mannequin player NPCs
+    // Compile against 1.21.11; runtime supports Paper 1.21.x, 26.1, and 26.2+
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.6")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.processResources {
@@ -38,4 +43,5 @@ tasks.jar {
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
+    options.release.set(21)
 }

@@ -11,7 +11,7 @@ Thanks for your interest in contributing.
 ## Development
 
 - **Java:** 21+
-- **Server API:** Paper 1.21+
+- **Server API:** Paper 1.21.x / 26.1 / 26.2+
 - **Build:** `./gradlew build` (Windows: `gradlew.bat build`)
 - Output JAR: `build/libs/ExtraNPC-<version>.jar`
 

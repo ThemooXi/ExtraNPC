@@ -1,6 +1,9 @@
 package me.themoo.extranpc.util;
 
 import me.themoo.extranpc.ExtraNPCPlugin;
+import me.themoo.extranpc.compat.ServerCompat;
+import me.themoo.extranpc.compat.ServerVersionParser;
+import me.themoo.extranpc.integration.PlayerNpcProvider;
 
 import java.util.logging.Logger;
 
@@ -12,10 +15,15 @@ public final class ConsoleBanner {
     private ConsoleBanner() {
     }
 
-    public static void printEnable(ExtraNPCPlugin plugin, int npcCount, boolean nativePlayers) {
+    public static void printEnable(ExtraNPCPlugin plugin, int npcCount, PlayerNpcProvider playerNpcs) {
         Logger log = plugin.getLogger();
         String version = plugin.getDescription().getVersion();
         String line = "════════════════════════════════════════════════════════";
+        String backend = playerNpcs != null && playerNpcs.isAvailable()
+                ? playerNpcs.backendName()
+                : "UNAVAILABLE";
+        String server = ServerVersionParser.describeFamily(ServerCompat.version())
+                + " · " + ServerCompat.rawVersion();
 
         log.info("");
         log.info(line);
@@ -28,8 +36,10 @@ public final class ConsoleBanner {
         log.info("  Advanced NPC Framework  ·  v" + version);
         log.info(line);
         log.info("  Status      : ENABLED");
+        log.info("  Server      : " + server);
+        log.info("  Support     : Paper 1.21.x / 26.1 / 26.2+");
         log.info("  NPCs        : " + npcCount + " loaded");
-        log.info("  Player NPCs : " + (nativePlayers ? "NATIVE (standalone)" : "UNAVAILABLE"));
+        log.info("  Player NPCs : " + backend);
         log.info("  Optional    : PlaceholderAPI (soft)");
         log.info(line);
         log.info("  Author      : ThemoO");

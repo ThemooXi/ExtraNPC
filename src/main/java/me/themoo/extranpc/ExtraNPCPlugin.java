@@ -2,10 +2,11 @@ package me.themoo.extranpc;
 
 import me.themoo.extranpc.command.NpcCommand;
 import me.themoo.extranpc.command.NpcTabCompleter;
+import me.themoo.extranpc.compat.ServerCompat;
 import me.themoo.extranpc.gui.GuiListener;
-import me.themoo.extranpc.integration.NativePlayerNpcProvider;
 import me.themoo.extranpc.integration.PlaceholderHook;
 import me.themoo.extranpc.integration.PlayerNpcProvider;
+import me.themoo.extranpc.integration.PlayerNpcProviders;
 import me.themoo.extranpc.listener.ChatInputListener;
 import me.themoo.extranpc.listener.NpcListener;
 import me.themoo.extranpc.listener.SupportReminderListener;
@@ -46,8 +47,9 @@ public final class ExtraNPCPlugin extends JavaPlugin {
         this.placeholderHook.hook();
         ConsoleBanner.printHook("PlaceholderAPI", placeholderHook.isEnabled());
 
-        this.playerNpcProvider = new NativePlayerNpcProvider(this);
-        ConsoleBanner.printHook("NativePlayerNPC", playerNpcProvider.isAvailable());
+        ServerCompat.logDetected(getLogger());
+        this.playerNpcProvider = PlayerNpcProviders.create(this);
+        ConsoleBanner.printHook("PlayerNPC/" + playerNpcProvider.backendName(), playerNpcProvider.isAvailable());
 
         this.npcManager = new NpcManager(this);
 
@@ -74,7 +76,7 @@ public final class ExtraNPCPlugin extends JavaPlugin {
         Bukkit.getScheduler().runTaskLater(this, () -> {
             npcManager.loadAll();
             if (getConfig().getBoolean("settings.console-banner", true)) {
-                ConsoleBanner.printEnable(this, npcManager.getNpcs().size(), true);
+                ConsoleBanner.printEnable(this, npcManager.getNpcs().size(), playerNpcProvider);
             } else {
                 getLogger().info("Enabled — " + npcManager.getNpcs().size() + " NPC(s) loaded.");
             }
@@ -98,7 +100,7 @@ public final class ExtraNPCPlugin extends JavaPlugin {
         messages.reload();
         npcManager.saveAll();
         npcManager.despawnAll();
-        playerNpcProvider = new NativePlayerNpcProvider(this);
+        playerNpcProvider = PlayerNpcProviders.create(this);
         npcManager.loadAll();
     }
 

@@ -11,6 +11,10 @@ public interface PlayerNpcProvider {
 
     boolean isAvailable();
 
+    default String backendName() {
+        return "UNKNOWN";
+    }
+
     void spawn(NpcData data);
 
     void despawn(NpcData data);
@@ -22,4 +26,6 @@ public interface PlayerNpcProvider {
     void applySettings(NpcData data);
 
     Entity getEntity(NpcData data);
+
+    void tickLook(NpcData data);
 }

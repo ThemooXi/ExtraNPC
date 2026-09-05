@@ -14,7 +14,7 @@
 ## ✨ Features
 
 **🧍 Player NPCs**
-- Real player model (Paper Mannequin)
+- Real player model (Paper Mannequin on 1.21.9+ / 26.1 / 26.2; ArmorStand fallback)
 - Skins by name or texture URL
 - Look-at-player · glow · holograms
 
@@ -58,7 +58,7 @@
 
 ## ⚙️ Requirements
 
-> 🖥️ Paper **1.21+** · ☕ Java **21+** · 💰 **Free** · 📜 MIT
+> 🖥️ Paper **1.21.x / 26.1 / 26.2+** · ☕ Java **21+** · 💰 **Free** · 📜 MIT
 > ✅ No required dependencies
 
 ---

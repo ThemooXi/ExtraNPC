@@ -7,13 +7,12 @@ import me.themoo.extranpc.model.NpcData;
 import me.themoo.extranpc.model.SkinData;
 import me.themoo.extranpc.util.TextUtil;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import me.themoo.extranpc.compat.BukkitCompat;
+import me.themoo.extranpc.compat.LookAtHelper;
 import org.bukkit.Location;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mannequin;
-import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.util.Vector;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -45,6 +44,11 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
     }
 
     @Override
+    public String backendName() {
+        return "MANNEQUIN";
+    }
+
+    @Override
     public void spawn(NpcData data) {
         despawn(data);
 
@@ -61,7 +65,11 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
 
         Mannequin mannequin = location.getWorld().spawn(location, Mannequin.class, entity -> {
             configure(entity, data);
-            applyProfile(entity, data);
+            try {
+                applyProfile(entity, data);
+            } catch (Throwable ex) {
+                plugin.getLogger().warning("Could not apply skin to '" + data.getId() + "': " + ex.getMessage());
+            }
         });
 
         data.setEntityUuid(mannequin.getUniqueId());
@@ -72,7 +80,6 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
         entity.setPersistent(true);
         entity.setRemoveWhenFarAway(false);
         entity.setAI(false);
-        entity.setImmovable(true);
         entity.setGravity(data.isGravity());
         entity.setInvulnerable(data.isInvulnerable());
         entity.setCollidable(data.isCollidable());
@@ -80,18 +87,19 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
         entity.setGlowing(data.isGlowing());
         entity.customName(TextUtil.parse(data.getDisplayName()));
         entity.setCustomNameVisible(data.isShowName());
-        // Hide default "NPC" subtitle under the name
-        entity.setDescription(null);
         entity.getPersistentDataContainer().set(
                 new org.bukkit.NamespacedKey(plugin, "npc-id"),
                 PersistentDataType.STRING,
                 data.getId()
         );
+        BukkitCompat.freezeMovement(entity);
         try {
-            var speed = entity.getAttribute(Attribute.MOVEMENT_SPEED);
-            if (speed != null) {
-                speed.setBaseValue(0.0);
-            }
+            entity.setImmovable(true);
+        } catch (Throwable ignored) {
+        }
+        try {
+            // Hide default "NPC" subtitle under the name
+            entity.setDescription(null);
         } catch (Throwable ignored) {
         }
         entity.setRotation(data.getLocation().getYaw(), data.getLocation().getPitch());
@@ -221,8 +229,14 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
         mannequin.setSilent(data.isSilent());
         mannequin.setInvulnerable(data.isInvulnerable());
         mannequin.setCollidable(data.isCollidable());
-        mannequin.setImmovable(true);
-        mannequin.setDescription(null);
+        try {
+            mannequin.setImmovable(true);
+        } catch (Throwable ignored) {
+        }
+        try {
+            mannequin.setDescription(null);
+        } catch (Throwable ignored) {
+        }
     }
 
     @Override
@@ -233,29 +247,8 @@ public final class NativePlayerNpcProvider implements PlayerNpcProvider {
         return plugin.getServer().getEntity(data.getEntityUuid());
     }
 
+    @Override
     public void tickLook(NpcData data) {
-        if (!data.isLookAtPlayers()) {
-            return;
-        }
-        Entity entity = getEntity(data);
-        if (entity == null || data.getLocation() == null) {
-            return;
-        }
-        Location base = entity.getLocation();
-        Player nearest = null;
-        double best = data.getLookRange() * data.getLookRange();
-        for (Player player : base.getWorld().getPlayers()) {
-            double d = player.getLocation().distanceSquared(base);
-            if (d <= best) {
-                best = d;
-                nearest = player;
-            }
-        }
-        if (nearest == null) {
-            return;
-        }
-        Vector dir = nearest.getEyeLocation().toVector().subtract(base.clone().add(0, 1.6, 0).toVector());
-        Location look = base.clone().setDirection(dir);
-        entity.setRotation(look.getYaw(), look.getPitch());
+        LookAtHelper.tick(data, getEntity(data), 1.6);
     }
 }

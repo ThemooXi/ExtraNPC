@@ -1,6 +1,7 @@
 package me.themoo.extranpc.gui;
 
 import me.themoo.extranpc.ExtraNPCPlugin;
+import me.themoo.extranpc.compat.BukkitCompat;
 import me.themoo.extranpc.model.NpcData;
 import me.themoo.extranpc.util.ItemBuilder;
 import me.themoo.extranpc.util.TextUtil;
@@ -38,6 +39,9 @@ public final class ParticleGui {
 
         int slot = 0;
         for (String particle : PARTICLES) {
+            if (!BukkitCompat.hasParticle(particle)) {
+                continue;
+            }
             boolean selected = data.getParticle().equalsIgnoreCase(particle);
             ItemStack item = new ItemBuilder(selected ? Material.LIME_DYE : Material.GRAY_DYE)
                     .name((selected ? "<green>" : "<white>") + particle + "</white>")

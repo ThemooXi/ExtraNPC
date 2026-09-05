@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -45,7 +44,7 @@ public final class NpcTabCompleter implements TabCompleter {
             }
         }
         if (args.length == 3 && args[0].equalsIgnoreCase("create")) {
-            return filter(Arrays.stream(NpcType.values()).map(Enum::name).map(String::toLowerCase).collect(Collectors.toList()), args[2]);
+            return filter(NpcType.available().stream().map(Enum::name).map(String::toLowerCase).collect(Collectors.toList()), args[2]);
         }
         return List.of();
     }

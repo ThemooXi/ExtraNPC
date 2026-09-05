@@ -107,7 +107,13 @@ public final class SkinManager {
                 }
             }
         }
-        meta.setPlayerProfile(profile);
+        try {
+            meta.setPlayerProfile(profile);
+        } catch (Throwable ignored) {
+            if (skin != null && skin.getMode() == SkinData.Mode.PLAYER_NAME && skin.getValue() != null && !skin.getValue().isBlank()) {
+                meta.setOwningPlayer(Bukkit.getOfflinePlayer(skin.getValue()));
+            }
+        }
         skull.setItemMeta(meta);
         return skull;
     }
@@ -117,7 +123,7 @@ public final class SkinManager {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setConnectTimeout(8000);
         connection.setReadTimeout(8000);
-        connection.setRequestProperty("User-Agent", "ExtraNPC/1.0");
+        connection.setRequestProperty("User-Agent", "ExtraNPC/1.1");
         connection.setRequestMethod("GET");
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
             StringBuilder builder = new StringBuilder();

@@ -18,7 +18,7 @@ body:
     id: server
     attributes:
       label: Server software / Minecraft version
-      placeholder: "Paper 1.21.x"
+      placeholder: "Paper 1.21.8 / 26.1.2 / 26.2"
     validations:
       required: true
   - type: textarea
